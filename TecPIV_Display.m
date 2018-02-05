@@ -191,7 +191,9 @@ Time1=Time0*Inc;
                 
 %                          
                 DerivROI=imref2d(size(DerivField),xwidth,ywidth); %defines the xy associated with Exx
+                
                 hDeriv=imshow(DerivField,DerivROI);
+                colormap(gca,jet)
                 iDeriv=colorbar('location','westoutside'); % place color bar with real values
                 set(get(iDeriv,'child'),'YData',Range);
                 set(iDeriv,'YLim',Range);
@@ -200,7 +202,9 @@ Time1=Time0*Inc;
                 
                 
                 hDeriv.AlphaData = DerivAlpha; %set transparency strain
-                cptcmap(DeriveCpt, 'mapping', 'direct'); caxis(Range); % defines the color scale
+                %cptcmap(DeriveCpt, 'mapping', 'direct'); 
+                
+                caxis(Range); % defines the color scale
                
             end
             

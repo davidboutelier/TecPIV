@@ -97,14 +97,7 @@ warning('off','MATLAB:dispatcher:nameConflict')
 %addpath('ParforProgMon');
 % addpath('ParforProgMonv2');
 % addpath('ParforProgMonv2/java');
-addpath('JAAdrian-MatlabProgressBar-b1609ed')
-addpath('jsonlab');
-addpath('toolbox_calib');
-addpath('minmaxround2');
-addpath('cptcmap');
-addpath('nquiverref');
-addpath('smoothn');
-addpath('inpaint_nans');
+addpath(fullfile(TecPivFolder,'toolbox'));
 
 %% Create version
 myhandles.Version='v.1801';
