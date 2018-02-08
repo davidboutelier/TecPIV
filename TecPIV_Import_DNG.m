@@ -27,7 +27,7 @@ function [NumberImages,ImageWidth,ImageHeight] = TecPIV_Import_DNG(IPath,ThisDat
 
     Images = cell(1,NumberImages); %Preallocate array of image addresses
     
-    obj = ProgressBar(NumberImages,'Title', 'Importing DNG images');
+    obj = ProgressBar(NumberImages,'Title', 'Importing images');
     for i = 1:NumberImages
         
         Images(i)=strcat(cellstr(DataPathName), DataFileName(i));

@@ -14,6 +14,8 @@ ImageInc = DataSets{ThisDataSetNumber,8};
 StartNumber = DataSets{ThisDataSetNumber,9}; 
 EndNumber = DataSets{ThisDataSetNumber,10}; 
 
+ImageFolderNumber = DataSets{ThisDataSetNumber,11}; % number of the dataset that contains the background images;
+
 %% Parameters for summation
 Npt=9;
 Nsteps=(EndNumber-StartNumber)/ImageInc + 1;
@@ -26,9 +28,11 @@ if ~exist('Lagrangian_Sum', 'dir')
 end
 cd(fullfile(PathData,ProjectID));
 
-%% Display progress
-progressStepSize = 1;
-ppm = ParforProgMon('Summing vector fields:  ', Nsteps, progressStepSize, 500, 40);
+% %% Display progress
+% progressStepSize = 1;
+% ppm = ParforProgMon('Summing vector fields:  ', Nsteps, progressStepSize, 500, 40);
+
+obj = ProgressBar(Nsteps,'Title','Summing vectors');
 
 %% Main loop
 for j=1:Nsteps
@@ -163,14 +167,16 @@ for j=1:Nsteps
         clear X Y U V
   
     end
-    if mod(j,progressStepSize)==0
-        ppm.increment();
-    end
+%     if mod(j,progressStepSize)==0
+%         ppm.increment();
+%     end
     
 
-
+obj.step([], [], []); 
 end
-ppm.delete()
+
+obj.release();
+%ppm.delete()
 
 
 

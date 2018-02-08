@@ -25,11 +25,15 @@ function [NumberImages,ImageWidth,ImageHeight] = TecPIV_Import_TIF(IPath,ThisDat
     
     Images = cell(1,NumberImages);
 
-    obj = ProgressBar(NumberImages,'Title', 'Importing TIF images');
+    obj = ProgressBar(NumberImages,'Title','Importing images');
     for i=1:NumberImages           
             Images{i}=strcat(cellstr(DataPathName), DataFileName(i));
             name=strcat('IMG_',num2str(i),'.tif');
-            easycopySilent(char(Images{i}), fullfile(FullDataFolder,name));
+            %easycopySilent(char(Images{i}), fullfile(FullDataFolder,name));
+            source=char(Images{i});
+            destination=fullfile(FullDataFolder,name);
+            copyfile(source,destination);
+            
     obj.step([], [], []);    
     end
     obj.release();
@@ -41,8 +45,8 @@ function [NumberImages,ImageWidth,ImageHeight] = TecPIV_Import_TIF(IPath,ThisDat
     ImageWidth=SizeI0(1,2);
     
     disp(['-> ' num2str(NumberImages) ' TIF images imported'])
-    disp(['-> Image Height is ' num2str(ImageHeight) 'pixels'])
-    disp(['-> Image Width is ' num2str(ImageWidth) 'pixels'])
+    disp(['-> Image Height is ' num2str(ImageHeight) ' pixels'])
+    disp(['-> Image Width is ' num2str(ImageWidth) ' pixels'])
     
     %go back to project folder
     cd(fullfile(PathData,ProjectName));

@@ -6,7 +6,7 @@ uiwait(msgbox('Checking calibration. Click the 4 corners of the calibration boar
    
 %% check the accuracy of rectification
       % Display rectified image
-      TecPIV_Display(ImB,Ax,RawCpt,VectorField,Derivative);
+      TecPIV_Display(TecPIVFolder,ImB,Ax,RawCpt,VectorField,Derivative);
       drawnow; hold on;
       
       % extract corner points from rectified image
@@ -76,7 +76,7 @@ uiwait(msgbox('Checking calibration. Click the 4 corners of the calibration boar
     delta = 30;
     
     % replot
-    TecPIV_Display(ImB,Ax,RawCpt,VectorField,Derivative);
+    TecPIV_Display(TecPIVFolder,ImB,Ax,RawCpt,VectorField,Derivative);
     drawnow; hold on;
     plot([Newx;Newx(1)],[Newy;Newy(1)],'g-');
     
@@ -128,7 +128,7 @@ uiwait(msgbox('Checking calibration. Click the 4 corners of the calibration boar
     y_box_kk = [grid_pts(2,:)-(winty+.5);grid_pts(2,:)-(winty+.5);grid_pts(2,:)+(winty+.5);grid_pts(2,:)+(winty+.5);grid_pts(2,:)-(winty+.5)];
     
     % replot
-    TecPIV_Display(ImB,Ax,RawCpt,VectorField,Derivative);
+    TecPIV_Display(TecPIVFolder,ImB,Ax,RawCpt,VectorField,Derivative);
     drawnow; hold on;
     
     plot(grid_pts(1,:)+1,grid_pts(2,:)+1,'r+');
@@ -293,7 +293,7 @@ uiwait(msgbox('Checking calibration. Click the 4 corners of the calibration boar
                 % load image to rectify
                 FramePath=fullfile(TecPIVFolder,ProjectName,DataFolder,['IMG_' num2str(Frame) '.tif']);
                 ImB=imread(FramePath);
-                TecPIV_Display(ImB,Ax,RawCpt,VectorField,Derivative);
+                TecPIV_Display(TecPIVFolder,ImB,Ax,RawCpt,VectorField,Derivative);
             
                 case 'No'
                 CropImage = 0;

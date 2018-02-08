@@ -1304,61 +1304,72 @@ hDisplayVectorRadioButton = uicontrol(...
     'Units', 'normalized', ...
     'Position',[0.01 0.7 0.2 0.2]);
 
+hDisplayAsGridRadioButton = uicontrol(...
+    'Style','radiobutton',...
+    'String','Display as grid',...
+    'Parent', hpanelChangeVectorDisplaySettings, ...
+    'Units', 'normalized', ...
+    'Position',[0.01 0.25 0.2 0.2]);
+
+
+
 htextVecGridFactor = uicontrol(...
     'Style','text', ...
     'String','Vector grid factor :',...
     'Parent', hpanelChangeVectorDisplaySettings, ...
     'Units', 'normalized', ...
-    'Position',[0.01 0.3 0.12 0.18]);
+    'Position',[0.27 0.67 0.22 0.18]);
 
 hpopupVecGridFactorSelector = uicontrol(...
     'Style','popupmenu',...
     'String',{'1','2','3','4','5','6','7','8','9','10','11','12','13','14','15','16'},...
     'Parent', hpanelChangeVectorDisplaySettings, ...
     'Units', 'normalized', ...
-    'Position',[0.14,0.37,0.06,0.15]);
+    'Position',[0.45,0.74,0.06,0.15]);
+
+
 
 htextVecColor = uicontrol(...
     'Style','text', ...
     'String','Vector color:',...
     'Parent', hpanelChangeVectorDisplaySettings, ...
     'Units', 'normalized', ...
-    'Position',[0.225 0.67 0.12 0.2]);
+    'Position',[0.525 0.67 0.12 0.2]);
 
 hpopupVecColorSelector = uicontrol(...
     'Style','popupmenu',...
     'String',{'yellow','magenta', 'cyan', 'red', 'green', 'blue', 'white', 'black'},...
     'Parent', hpanelChangeVectorDisplaySettings, ...
     'Units', 'normalized', ...
-    'Position',[0.35,0.77,0.125,0.15]);
+    'Position',[0.65,0.77,0.125,0.15]);
 
 htextVecScalingMode = uicontrol(...
     'Style','text', ...
     'String','Scaling mode:',...
     'Parent', hpanelChangeVectorDisplaySettings, ...
     'Units', 'normalized', ...
-    'Position',[0.235 0.25 0.12 0.2]);
+    'Position',[0.535 0.25 0.12 0.2]);
 
 hpopupVecColorScalingModeSelector = uicontrol(...
     'Style','popupmenu',...
     'String',{'mean','max', 'manual'},...
     'Parent', hpanelChangeVectorDisplaySettings, ...
     'Units', 'normalized', ...
-    'Position',[0.35,0.36,0.125,0.15]);
+    'Position',[0.65,0.36,0.125,0.15]);
 
 htextVecScalingLength = uicontrol(...
     'Style','text', ...
-    'String','Ref (pix):',...
+    'String','Ref (phys / s):',...
     'Parent', hpanelChangeVectorDisplaySettings, ...
     'Units', 'normalized', ...
-    'Position',[0.5 0.67 0.12 0.2]);
+    'Position',[0.8 0.67 0.12 0.2]);
 
 hVecScalingLength = uicontrol(...
     'Style','edit',...
-    'String','4',...
+    'String','0.1',...
     'Parent', hpanelChangeVectorDisplaySettings, ...
     'Units', 'normalized', ...
-    'Position',[0.615 0.65 0.06 0.3]);
+    'Position',[0.915 0.65 0.06 0.3]);
 
 % Vector derivative
 hpanelChangeVectorDerivativeDisplaySettings = uipanel(...
@@ -1399,9 +1410,9 @@ htextVecDerivativeColorPalette = uicontrol(...
     'Position',[0.007 0.3 0.095 0.15]);
 
 % put available cpt palettes in a list
-CPT_Folder=fullfile(myhandles.TecPivFolder,'cptcmap','cptfiles');
-DirEntries = dir(fullfile(CPT_Folder,'*.cpt'));
-ListOfCPTnames = {};
+CPT_Folder=fullfile(myhandles.TecPivFolder,'toolbox','colormaps');
+DirEntries = dir(fullfile(CPT_Folder,'*.mat'));
+ListOfCPTnames = {'parula','jet','hsv','hot','cool','spring','summer','autumn','winter','gray','bone','copper','pink','lines','colorcube','prism','flag','white'};
 for Index = 1:length(DirEntries)
     CPTFileName = DirEntries(Index).name;
     [CPTfolder, CPTname, CPTextension] = fileparts(CPTFileName);
@@ -1596,7 +1607,7 @@ myhandles.VectorField{1,11} = []; % inc
 myhandles.Derivative{1,1} = 0;
 myhandles.Derivative{1,2}= 'Exx';
 myhandles.Derivative{1,3} = 1; % minmax
-myhandles.Derivative{1,4} = 'BlueWhiteOrangeRed';% default palette for derivative
+myhandles.Derivative{1,4} = 'parula';% default palette for derivative
 myhandles.Derivative{1,5} = 0; % default min
 myhandles.Derivative{1,6} = 1; % default max
 myhandles.Derivative{1,7} = 0.5; % alpha
@@ -1782,6 +1793,7 @@ function hImportFramesCallback(hImportFrames,eventdata)
         myhandles.DataSets{ThisDataSetNumber,8} = 1; % ImageIncrement
         myhandles.DataSets{ThisDataSetNumber,9} = 1; % StartImage
         myhandles.DataSets{ThisDataSetNumber,10} = NumberImages; % EndImage
+        myhandles.DataSets{ThisDataSetNumber,11} = ThisDataSetNumber;
     
         guidata(hMainFigure,myhandles);
     
@@ -1789,7 +1801,7 @@ function hImportFramesCallback(hImportFrames,eventdata)
         Frame=1;
         FramePath=fullfile(myhandles.PathData,myhandles.ProjectID,ThisDataSetName,['IMG_' num2str(Frame) '.tif']);
         I0=imread(FramePath);
-        TecPIV_Display(I0,hPlotAxes,myhandles.RawCpt,myhandles.VectorField,myhandles.Derivative);
+        TecPIV_Display(myhandles.TecPivFolder,I0,hPlotAxes,myhandles.RawCpt,myhandles.VectorField,myhandles.Derivative);
         
     
         % Update the player
@@ -1835,7 +1847,7 @@ function hImportFramesCallback(hImportFrames,eventdata)
     
         guidata(hMainFigure,myhandles);
     
-    end
+end
 
 
     function hControlPointsExtractionStartCallback(hStartControlPointsExtraction,eventdata)
@@ -1896,6 +1908,8 @@ function hImportFramesCallback(hImportFrames,eventdata)
         myhandles.DataSets{ThisDataSetNumber,1}=NewDataFolder;
         myhandles.DataSets{ThisDataSetNumber,2}=myhandles.PathData;
         myhandles.DataSets{ThisDataSetNumber,3}=myhandles.ProjectID;
+        
+        myhandles.DataSets{ThisDataSetNumber,11}=ThisDataSetNumber;
 
         guidata(hMainFigure);
     
@@ -1903,7 +1917,7 @@ function hImportFramesCallback(hImportFrames,eventdata)
         Frame=1;
         FramePath=fullfile(myhandles.PathData,myhandles.ProjectID,NewDataFolder,['IMG_' num2str(Frame) '.tif']);
         I0=imread(FramePath);
-        TecPIV_Display(I0,hPlotAxes,myhandles.RawCpt,myhandles.VectorField,myhandles.Derivative);
+        TecPIV_Display(myhandles.TecPivFolder,I0,hPlotAxes,myhandles.RawCpt,myhandles.VectorField,myhandles.Derivative);
         
         
         n_sq_x=str2double(hNbSqX.String);
@@ -1952,7 +1966,7 @@ function hImportFramesCallback(hImportFrames,eventdata)
             NewDataFolder=fullfile(NewDataFolder,'Rectified2');
             FramePath=fullfile(myhandles.PathData,myhandles.ProjectID,NewDataFolder,['IMG_' num2str(Frame) '.tif']);
             I0=imread(FramePath);
-            TecPIV_Display(I0,hPlotAxes,myhandles.RawCpt,myhandles.VectorField,myhandles.Derivative);
+            TecPIV_Display(myhandles.TecPivFolder,I0,hPlotAxes,myhandles.RawCpt,myhandles.VectorField,myhandles.Derivative);
             [SDX, SDY,CropImage,rect] = TecPIV_CheckCalib(I0,...
                 hPlotAxes,...
                 myhandles.RawCpt,...
@@ -1984,8 +1998,11 @@ function hImportFramesCallback(hImportFrames,eventdata)
         myhandles.DataSets{ThisDataSetNumber,4} = 1;
         myhandles.DataSets{ThisDataSetNumber,5} = ImageWidth;%%
         myhandles.DataSets{ThisDataSetNumber,6} = ImageHeight;%%%
-        myhandles.DataSets{ThisDataSetNumber,7} = 1; % dt
-        myhandles.DataSets{ThisDataSetNumber,8} = 1; % increment
+        myhandles.DataSets{ThisDataSetNumber,7} = 1; % dt (time inc)
+        myhandles.DataSets{ThisDataSetNumber,8} = 1; % image increment
+        myhandles.DataSets{ThisDataSetNumber,9} = 1; % start number
+        myhandles.DataSets{ThisDataSetNumber,10} = 1; % end number
+        
         
 %        myhandles.Datasets{ThisDataSetNumber,9} = XPix;
  %       myhandles.Datasets{ThisDataSetNumber,10} = YPix;
@@ -2270,7 +2287,7 @@ function hImportFramesCallback(hImportFrames,eventdata)
                 h = figure();
                 newaxes = axes('DataAspectRatio',[1 1 1]);
                 
-                TecPIV_Display(I0,newaxes,myhandles.RawCpt,myhandles.VectorField,myhandles.Derivative);
+                TecPIV_Display(myhandles.TecPivFolder,I0,newaxes,myhandles.RawCpt,myhandles.VectorField,myhandles.Derivative);
                 set(h,'Visible', 'off'); 
         
                 % Set up the paper size / position
@@ -2420,7 +2437,7 @@ function hImportFramesCallback(hImportFrames,eventdata)
         Frame=1;
         FramePath=fullfile(PathData,PROJECTID,NewDataFolder,['IMG_' num2str(Frame) '.tif']);
         I0=imread(FramePath);
-        TecPIV_Display(I0,hPlotAxes,myhandles.RawCpt,myhandles.VectorField,myhandles.Derivative);
+        TecPIV_Display(myhandles.TecPivFolder,I0,hPlotAxes,myhandles.RawCpt,myhandles.VectorField,myhandles.Derivative);
         
         SizeI0=size(I0);
         ImageHeight=SizeI0(1,1);
@@ -2440,6 +2457,7 @@ function hImportFramesCallback(hImportFrames,eventdata)
         myhandles.DataSets{ThisDataSetNumber,8} = ImageInc;
         myhandles.DataSets{ThisDataSetNumber,9} = StartNumber;
         myhandles.DataSets{ThisDataSetNumber,10} = EndNumber;
+        myhandles.DataSets{ThisDataSetNumber,11} = ThisDataSetNumber; % for images. Image source is the same dataset (not true for vectors and cumulative vectors).
         
         TimeInc = myhandles.DataSets{ThisDataSetNumber,7};
         
@@ -2556,7 +2574,7 @@ function hImportFramesCallback(hImportFrames,eventdata)
 
         end
         
-        TecPIV_Display(I1,hPlotAxes,myhandles.RawCpt,myhandles.VectorField,myhandles.Derivative);
+        TecPIV_Display(myhandles.TecPivFolder,I1,hPlotAxes,myhandles.RawCpt,myhandles.VectorField,myhandles.Derivative);
         
         hpanelContrast.Visible='off';
         hSecondFigure.Visible = 'off';
@@ -2619,7 +2637,7 @@ function hImportFramesCallback(hImportFrames,eventdata)
         
         FramePath=fullfile(PathData,ProjectID,DatasetFolder,['IMG_' hImgNumber.String '.tif']);
         I0=imread(FramePath);
-        TecPIV_Display(I0,hPlotAxes,myhandles.RawCpt,myhandles.VectorField,myhandles.Derivative);
+        TecPIV_Display(myhandles.TecPivFolder,I0,hPlotAxes,myhandles.RawCpt,myhandles.VectorField,myhandles.Derivative);
         
         % get the parameters from GUI
         
@@ -2803,7 +2821,7 @@ function hImportFramesCallback(hImportFrames,eventdata)
           
         
         [x,y,u,v,typevector] = TecPIV_Call_PIV(myhandles.DataSets,DataSetNumber,param); % pass all the paremeters assembled in tables to PIV function
-        
+        ImageFolderNumber=DataSetNumber;
         PIVTime=toc;
         message=sprintf('PIV correlation done in %0.2f s',PIVTime); 
         disp(message)
@@ -2820,7 +2838,6 @@ function hImportFramesCallback(hImportFrames,eventdata)
         load(fullfile(PathData,ProjectID,DatasetFolder, 'Vectors',['Vector_' num2str(StartNumber+ImageInc) '.mat']));
         
         myhandles.VectorField{1,1} = 1; % display yes/no
-
         myhandles.VectorField{1,5} = X; %cell2mat(X); 
         myhandles.VectorField{1,6} = Y; %cell2mat(Y); 
         myhandles.VectorField{1,7} = U; %cell2mat(U); 
@@ -2835,7 +2852,7 @@ function hImportFramesCallback(hImportFrames,eventdata)
         myhandles.Derivative{1,1} = 1; % display 1=yes 0=no
         
         cla(hPlotAxes);
-        TecPIV_Display(I0,hPlotAxes,myhandles.RawCpt,myhandles.VectorField,myhandles.Derivative);
+        TecPIV_Display(myhandles.TecPivFolder,I0,hPlotAxes,myhandles.RawCpt,myhandles.VectorField,myhandles.Derivative);
         
         %% Add entry to the source selector
         ThisDataSetNumber=myhandles.NumberOfDatasets+1;
@@ -2844,13 +2861,15 @@ function hImportFramesCallback(hImportFrames,eventdata)
         myhandles.DataSets{ThisDataSetNumber,1} = NewDataFolder;
         myhandles.DataSets{ThisDataSetNumber,2} = PathData;
         myhandles.DataSets{ThisDataSetNumber,3} = myhandles.ProjectID;
-        myhandles.DataSets{ThisDataSetNumber,4} = NumberImages;
+        myhandles.DataSets{ThisDataSetNumber,4} = NumberImages-ImageInc;
         myhandles.DataSets{ThisDataSetNumber,5} = [];
         myhandles.DataSets{ThisDataSetNumber,6} = [];
         myhandles.DataSets{ThisDataSetNumber,7} = myhandles.DataSets{DataSetNumber,7}; % same time inc as originial dataset (for now)
         myhandles.DataSets{ThisDataSetNumber,8} = ImageInc;
         myhandles.DataSets{ThisDataSetNumber,9} = StartNumber+ImageInc;
         myhandles.DataSets{ThisDataSetNumber,10}= EndNumber;
+        
+        myhandles.DataSets{ThisDataSetNumber,11} = ImageFolderNumber; % the number of the dataset that was used for the PIV calculation and to be plotted under the vector field;
         
         
         NewEntryName=myhandles.DataSets{ThisDataSetNumber,1};
@@ -2945,7 +2964,7 @@ function hImportFramesCallback(hImportFrames,eventdata)
                 h = figure();
                 newaxes = axes('DataAspectRatio',[1 1 1]);
                 
-                TecPIV_Display(I0,newaxes,myhandles.RawCpt,myhandles.VectorField,myhandles.Derivative);
+                TecPIV_Display(myhandles.TecPivFolder,I0,newaxes,myhandles.RawCpt,myhandles.VectorField,myhandles.Derivative);
                 set(h,'Visible', 'off'); % don't show image when exporting to accelerate
         
                 % Set up the paper size / position
@@ -3022,7 +3041,7 @@ function hImportFramesCallback(hImportFrames,eventdata)
                     h = figure();
                     newaxes = axes('DataAspectRatio',[1 1 1]);
                 
-                    TecPIV_Display(I0,newaxes,myhandles.RawCpt,myhandles.VectorField,myhandles.Derivative);
+                    TecPIV_Display(myhandles.TecPivFolder,I0,newaxes,myhandles.RawCpt,myhandles.VectorField,myhandles.Derivative);
                     set(h,'Visible', 'off'); 
         
                     % Set up the paper size / position
@@ -3102,7 +3121,7 @@ function hImportFramesCallback(hImportFrames,eventdata)
                     h = figure();
                     newaxes = axes('DataAspectRatio',[1 1 1]);
                 
-                    TecPIV_Display(I0,newaxes,myhandles.RawCpt,myhandles.VectorField,myhandles.Derivative);
+                    TecPIV_Display(myhandles.TecPivFolder,I0,newaxes,myhandles.RawCpt,myhandles.VectorField,myhandles.Derivative);
                     set(h,'Visible', 'off'); 
         
                     % Set up the paper size / position
@@ -3197,7 +3216,7 @@ function hImportFramesCallback(hImportFrames,eventdata)
                 
 
                 cla(hPlotAxes);
-                TecPIV_Display(I0,hPlotAxes,myhandles.RawCpt,myhandles.VectorField,myhandles.Derivative)
+                TecPIV_Display(myhandles.TecPivFolder,I0,hPlotAxes,myhandles.RawCpt,myhandles.VectorField,myhandles.Derivative)
                 drawnow
                 
                 
@@ -3249,7 +3268,7 @@ function hImportFramesCallback(hImportFrames,eventdata)
                 I0=imread(Framepath);
                 cla(hPlotAxes);
                 
-                TecPIV_Display(I0,hPlotAxes,myhandles.RawCpt,myhandles.VectorField,myhandles.Derivative)
+                TecPIV_Display(myhandles.TecPivFolder,I0,hPlotAxes,myhandles.RawCpt,myhandles.VectorField,myhandles.Derivative)
                 drawnow
 
                 Frame=Frame+ImageInc;
@@ -3292,7 +3311,7 @@ function hImportFramesCallback(hImportFrames,eventdata)
         
         FramePath=fullfile(PathData,ProjectID,DatasetFolder,['IMG_' num2str(StartImage) '.tif']);
         I0=imread(FramePath);
-        TecPIV_Display(I0,hPlotAxes,myhandles.RawCpt,myhandles.VectorField,myhandles.Derivative);
+        TecPIV_Display(myhandles.TecPivFolder,I0,hPlotAxes,myhandles.RawCpt,myhandles.VectorField,myhandles.Derivative);
         
         
         % update the player
@@ -3358,7 +3377,7 @@ function hImportFramesCallback(hImportFrames,eventdata)
             Framepath=fullfile(PathData,ProjectID,DatasetFolder,['IMG_' num2str(NewFrame) '.tif']);
             I0=imread(Framepath);
             cla(hPlotAxes);
-            TecPIV_Display(I0,hPlotAxes,myhandles.RawCpt,myhandles.VectorField,myhandles.Derivative)
+            TecPIV_Display(myhandles.TecPivFolder,I0,hPlotAxes,myhandles.RawCpt,myhandles.VectorField,myhandles.Derivative)
             drawnow
             
         else % dataset is vector 
@@ -3396,7 +3415,7 @@ function hImportFramesCallback(hImportFrames,eventdata)
 
             
             cla(hPlotAxes);
-            TecPIV_Display(I0,hPlotAxes,myhandles.RawCpt,myhandles.VectorField,myhandles.Derivative)
+            TecPIV_Display(myhandles.TecPivFolder,I0,hPlotAxes,myhandles.RawCpt,myhandles.VectorField,myhandles.Derivative)
             drawnow
             
             
@@ -3462,7 +3481,7 @@ function hImportFramesCallback(hImportFrames,eventdata)
             Framepath=fullfile(PathData,ProjectID,DatasetFolder,['IMG_' num2str(Frame) '.tif']);
             I0=imread(Framepath);
             cla(hPlotAxes);
-            TecPIV_Display(I0,hPlotAxes,myhandles.RawCpt,myhandles.VectorField,myhandles.Derivative)
+            TecPIV_Display(myhandles.TecPivFolder,I0,hPlotAxes,myhandles.RawCpt,myhandles.VectorField,myhandles.Derivative)
             drawnow
         else % data is vector
             k=strfind(DatasetFolder,'Rectified'); % check if dataset includes Rectified
@@ -3499,7 +3518,7 @@ function hImportFramesCallback(hImportFrames,eventdata)
 
             
             cla(hPlotAxes);
-            TecPIV_Display(I0,hPlotAxes,myhandles.RawCpt,myhandles.VectorField,myhandles.Derivative)
+            TecPIV_Display(myhandles.TecPivFolder,I0,hPlotAxes,myhandles.RawCpt,myhandles.VectorField,myhandles.Derivative)
             drawnow
             
         end
@@ -3549,7 +3568,7 @@ function hImportFramesCallback(hImportFrames,eventdata)
             Framepath=fullfile(PathData,ProjectID,DatasetFolder,['IMG_' num2str(Frame) '.tif']);
             I0=imread(Framepath);
             cla(hPlotAxes);
-            TecPIV_Display(I0,hPlotAxes,myhandles.RawCpt,myhandles.VectorField,myhandles.Derivative)
+            TecPIV_Display(myhandles.TecPivFolder,I0,hPlotAxes,myhandles.RawCpt,myhandles.VectorField,myhandles.Derivative)
             drawnow
         else
             % data is vector
@@ -3587,7 +3606,7 @@ function hImportFramesCallback(hImportFrames,eventdata)
 
             
             cla(hPlotAxes);
-            TecPIV_Display(I0,hPlotAxes,myhandles.RawCpt,myhandles.VectorField,myhandles.Derivative)
+            TecPIV_Display(myhandles.TecPivFolder,I0,hPlotAxes,myhandles.RawCpt,myhandles.VectorField,myhandles.Derivative)
             drawnow
         end
   
@@ -3680,7 +3699,7 @@ function hImportFramesCallback(hImportFrames,eventdata)
                 ImageFolder=fullfile('Raw');
                  Framepath=fullfile(PathData,ProjectID,ImageFolder,['IMG_' num2str(CurrentFrame) '.tif']);
                 I0=imread(Framepath);
-                Vector=fullfile(PathData,ProjectID,DatasetFolder,['Vector_' num2str(CurrentFrame+1) '.mat']);
+                Vector=fullfile(PathData,ProjectID,DatasetFolder,['Vector_' num2str(CurrentFrame) '.mat']);
                 load(Vector);
                 
                 myhandles.VectorField{1,5} = X; %cell2mat(X); 
@@ -3697,7 +3716,7 @@ function hImportFramesCallback(hImportFrames,eventdata)
                 
                 Framepath=fullfile(PathData,ProjectID,ImageFolder,['IMG_' num2str(CurrentFrame) '.tif']);
                 I0=imread(Framepath);
-                Vector=fullfile(PathData,ProjectID,DatasetFolder,['Vector_' num2str(CurrentFrame+1) '.mat']);
+                Vector=fullfile(PathData,ProjectID,DatasetFolder,['Vector_' num2str(CurrentFrame) '.mat']);
                 load(Vector);
                 
                 myhandles.VectorField{1,5} = X; %cell2mat(X); 
@@ -3710,7 +3729,7 @@ function hImportFramesCallback(hImportFrames,eventdata)
             end
         end
         
-        TecPIV_Display(I0,hPlotAxes,myhandles.RawCpt,myhandles.VectorField,myhandles.Derivative);
+        TecPIV_Display(myhandles.TecPivFolder,I0,hPlotAxes,myhandles.RawCpt,myhandles.VectorField,myhandles.Derivative);
         
         guidata(hMainFigure,myhandles); 
         
@@ -3718,29 +3737,43 @@ function hImportFramesCallback(hImportFrames,eventdata)
     function hLagrangianSumMenuitemCallback(hLagrangianSumMenuitem,eventdata)
         
         ThisDataSetNumber=hpopupSourceSelector.Value; % get  the selected dataset
-        
         SourceData = myhandles.DataSets{ThisDataSetNumber,1};
-        
+        NumberSourceData=ThisDataSetNumber;
         TecPIV_Lag_Sum(myhandles.DataSets,ThisDataSetNumber)
         
+        % create new dataset
         ThisDataSetNumber=myhandles.NumberOfDatasets+1;
+        
         myhandles.NumberOfDatasets=ThisDataSetNumber;
         ThisDataSetName='Raw/Vectors/Lagrangian_Sum';
         myhandles.DataSets{ThisDataSetNumber,1}=ThisDataSetName;
         myhandles.DataSets{ThisDataSetNumber,2}=myhandles.PathData;
         myhandles.DataSets{ThisDataSetNumber,3}=myhandles.ProjectID;
+        myhandles.DataSets{ThisDataSetNumber,4}=myhandles.DataSets{NumberSourceData,4};
+        myhandles.DataSets{ThisDataSetNumber,5}=myhandles.DataSets{NumberSourceData,5};
+        myhandles.DataSets{ThisDataSetNumber,6}=myhandles.DataSets{NumberSourceData,6};
+        myhandles.DataSets{ThisDataSetNumber,7}=myhandles.DataSets{NumberSourceData,7};
+        myhandles.DataSets{ThisDataSetNumber,8}=myhandles.DataSets{NumberSourceData,8};
+        myhandles.DataSets{ThisDataSetNumber,9}=myhandles.DataSets{NumberSourceData,9};
+        myhandles.DataSets{ThisDataSetNumber,10}=myhandles.DataSets{NumberSourceData,10};
+        myhandles.DataSets{ThisDataSetNumber,11}=myhandles.DataSets{NumberSourceData,11};
+        
         myhandles.entries = hpopupSourceSelector.String;
         myhandles.entries = [myhandles.entries; ThisDataSetName];
         hpopupSourceSelector.String = myhandles.entries;
         myhandles.SelectedEntry=ThisDataSetNumber;
         hpopupSourceSelector.Value=ThisDataSetNumber; 
         
-        Frame=20;
+        Frame=myhandles.DataSets{ThisDataSetNumber,9};
+        SaveDatasets=myhandles.DataSets
+        save('Datasets.mat','SaveDatasets');  
         
-        k=strfind(SourceData,'Rectified'); % check if dataset includes Rectified
-        if isempty(k) == 1 % Dataset is vector, not Rectified
-            ImageFolder=fullfile('Raw'); 
-        end
+%         k=strfind(SourceData,'Rectified') % check if dataset includes Rectified
+%         if isempty(k) == 1 % Dataset is vector, not Rectified
+%             ImageFolder=fullfile('Raw'); 
+%         end
+        ImageFolderNumber=myhandles.DataSets{ThisDataSetNumber,11};
+        ImageFolder=myhandles.DataSets{ImageFolderNumber,1};
         Framepath=fullfile(myhandles.PathData,myhandles.ProjectID,ImageFolder,['IMG_' num2str(Frame) '.tif']);
         I=imread(Framepath);
         
@@ -3763,7 +3796,7 @@ function hImportFramesCallback(hImportFrames,eventdata)
         
         guidata(hMainFigure,myhandles);
     end
-function hEulerianSumMenuitemCallback(hEulerianSumMenuitem,eventdata)
+    function hEulerianSumMenuitemCallback(hEulerianSumMenuitem,eventdata)
     ThisDataSetNumber=hpopupSourceSelector.Value; % get  the selected dataset
     %SourceData = myhandles.DataSets{ThisDataSetNumber,1};
     TecPIV_Cumulative_Eul(myhandles.DataSets,ThisDataSetNumber)

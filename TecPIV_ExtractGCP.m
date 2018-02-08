@@ -14,7 +14,7 @@ for i=1:NumberImages
     FramePath=fullfile(TecPIVFolder,ProjectName,DataFolder,['IMG_' num2str(i) '.tif']);
     I=imread(FramePath);
     axes(Ax);
-    TecPIV_Display(I,Ax,RawCpt,VectorField,Derivative);
+    TecPIV_Display(TecPIVFolder,I,Ax,RawCpt,VectorField,Derivative);
     drawnow; hold on;
     I0=single(I); %make cornerfinder work on single precision
     SizeI=size(I);
@@ -101,7 +101,7 @@ for i=1:NumberImages
     delta = 30;
     
     % replot
-    TecPIV_Display(I,Ax,RawCpt,VectorField,Derivative);
+    TecPIV_Display(TecPIVFolder,I,Ax,RawCpt,VectorField,Derivative);
     drawnow; hold on;
     plot([x;x(1)],[y;y(1)],'g-');
     
@@ -156,7 +156,7 @@ for i=1:NumberImages
     y_box_kk = [grid_pts(2,:)-(winty+.5);grid_pts(2,:)-(winty+.5);grid_pts(2,:)+(winty+.5);grid_pts(2,:)+(winty+.5);grid_pts(2,:)-(winty+.5)];
     
     % replot
-    TecPIV_Display(I,Ax,RawCpt,VectorField,Derivative);
+    TecPIV_Display(TecPIVFolder,I,Ax,RawCpt,VectorField,Derivative);
     drawnow; hold on;
     
     plot(grid_pts(1,:)+1,grid_pts(2,:)+1,'r+');

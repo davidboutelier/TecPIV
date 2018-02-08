@@ -1,4 +1,4 @@
-function TecPIV_Display(I,Ax,RawCpt,VectorField,Derivative)
+function TecPIV_Display(TecPivFolder,I,Ax,RawCpt,VectorField,Derivative)
 %UNTITLED Summary of this function goes here
 %   Detailed explanation goes here
 % I : image to be displayed
@@ -22,7 +22,6 @@ RelativeMax=ColorMapMax/65536;
 DoScale=RawCpt{1,4};
 ImScale=RawCpt{1,5}; %ImScale=6.84;
 Units=RawCpt{1,6}; %Units='mm';
-
 
 
 % adjust image to requested range
@@ -193,7 +192,14 @@ Time1=Time0*Inc;
                 DerivROI=imref2d(size(DerivField),xwidth,ywidth); %defines the xy associated with Exx
                 
                 hDeriv=imshow(DerivField,DerivROI);
-                colormap(gca,jet)
+                ListMATLABCPT={'parula','jet','hsv','hot','cool','spring','summer','autumn','winter','gray','bone','copper','pink','lines','colorcube','prism','flag','white'};
+                Lia = ismember(DeriveCpt,ListMATLABCPT);
+                if Lia == 1
+                    colormap(gca,DeriveCpt)
+                else
+                    load(fullfile(TecPivFolder,'toolbox','colormaps',DeriveCpt));
+                    colormap(gca,RGB)
+                end
                 iDeriv=colorbar('location','westoutside'); % place color bar with real values
                 set(get(iDeriv,'child'),'YData',Range);
                 set(iDeriv,'YLim',Range);
