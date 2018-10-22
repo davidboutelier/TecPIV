@@ -1,0 +1,12 @@
+Welcome. Starting a new session of TecPIV v.1801 ...
+
+Determine if computation can be performed on GPU.................... No.
+
+CUDA is not yet made to work on macos.
+{Reference to non-existent field 'String'.
+
+Error in <a href="matlab:matlab.internal.language.introspective.errorDocCallback('TecPIV/hDisplaySettingsMenuitemCallback', '/Users/dpb509/Documents/MATLAB/TecPIV/TecPIV.m', 1740)" style="font-weight:bold">TecPIV/hDisplaySettingsMenuitemCallback</a> (<a href="matlab: opentoline('/Users/dpb509/Documents/MATLAB/TecPIV/TecPIV.m',1740,0)">line 1740</a>)
+        ListPopUp = hpopupBackgroundCPTSelector.String;
+} 
+Error while evaluating Menu Callback.
+
