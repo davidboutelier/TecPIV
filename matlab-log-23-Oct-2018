@@ -1,0 +1,50 @@
+Welcome. Starting a new session of TecPIV v.1801 ...
+
+Determine if computation can be performed on GPU.................... No.
+
+CUDA is not yet made to work on macos.
+hPlotAxes = 
+  <a href="matlab:helpPopup matlab.graphics.axis.Axes" style="font-weight:bold">Axes</a> with properties:
+
+             XLim: [0 1]
+             YLim: [0 1]
+           XScale: 'linear'
+           YScale: 'linear'
+    GridLineStyle: '-'
+         Position: [0.0480 0.1150 0.9400 0.8600]
+            Units: 'normalized'
+
+  Show <a href="matlab:if exist('hPlotAxes', 'var'), matlab.graphics.internal.getForDisplay('hPlotAxes', hPlotAxes, 'matlab.graphics.axis.Axes'), else, matlab.graphics.internal.getForDisplay('hPlotAxes'), end">all properties</a>
+hOpenMenuitem = 
+  <a href="matlab:helpPopup matlab.ui.container.Menu" style="font-weight:bold">Menu</a> (Open) with properties:
+
+               Text: 'Open'
+        Accelerator: ''
+    MenuSelectedFcn: @hOpenMenuitemCallback
+          Separator: 'off'
+            Checked: 'off'
+
+  Show <a href="matlab:if exist('hOpenMenuitem', 'var'), matlab.graphics.internal.getForDisplay('hOpenMenuitem', hOpenMenuitem, 'matlab.ui.container.Menu'), else, matlab.graphics.internal.getForDisplay('hOpenMenuitem'), end">all properties</a>
+hNewMenuitem = 
+  <a href="matlab:helpPopup matlab.ui.container.Menu" style="font-weight:bold">Menu</a> (New) with properties:
+
+               Text: 'New'
+        Accelerator: ''
+    MenuSelectedFcn: @hNewMenuitemCallback
+          Separator: 'off'
+            Checked: 'off'
+
+  Show <a href="matlab:if exist('hNewMenuitem', 'var'), matlab.graphics.internal.getForDisplay('hNewMenuitem', hNewMenuitem, 'matlab.ui.container.Menu'), else, matlab.graphics.internal.getForDisplay('hNewMenuitem'), end">all properties</a>
+hCloseMenuitem = 
+  <a href="matlab:helpPopup matlab.ui.container.Menu" style="font-weight:bold">Menu</a> (Save & Close) with properties:
+
+               Text: 'Save & Close'
+        Accelerator: ''
+    MenuSelectedFcn: @hCloseMenuitemCallback
+          Separator: 'on'
+            Checked: 'off'
+
+  Show <a href="matlab:if exist('hCloseMenuitem', 'var'), matlab.graphics.internal.getForDisplay('hCloseMenuitem', hCloseMenuitem, 'matlab.ui.container.Menu'), else, matlab.graphics.internal.getForDisplay('hCloseMenuitem'), end">all properties</a>
+{Undefined function 'hNewMenuitemCallback' for input arguments of type 'matlab.ui.container.Menu'.} 
+Error while evaluating Menu Callback.
+
