@@ -35,10 +35,6 @@ function CloseRequestMainFigure(hMainFigure,eventdata,handles)
         warning('off','MATLAB:Figure:FigureSavedToMATFile')
         disp('Saving figures...')
         saveas(hMainFigure, 'MainFigure.m', 'm');
-        saveas(hImportFigure, 'ImportFigure.m', 'm');
-        
-        
-        saveas(hSecondFigure, 'SecondFigure.m', 'm');
         
         % create structure of handles
         Data = guidata(hMainFigure); 
@@ -331,7 +327,7 @@ hPlotAxes = axes(...
     'Parent', hMainFigure, ...
     'Units', 'pixels', ...
     'HandleVisibility','callback', ...
-    'Position',[220 30 (P(3)-220 -10) (P(4) -40) ]);
+    'Position',[220 70 (P(3)-220 -20) (P(4) -80) ]);
 
 PP = hpanelPlayer.Position;
 
@@ -971,7 +967,8 @@ for folding = true
     % put available cpt palettes in a list
     CPT_Folder=fullfile(myhandles.TecPivFolder,'toolbox','colormaps');
     DirEntries = dir(fullfile(CPT_Folder,'*.mat'));
-    ListOfCPTnames = {'parula','jet','hsv','hot','cool','spring','summer','autumn','winter','gray','bone','copper','pink','lines','colorcube','prism','flag','white'};
+    %ListOfCPTnames = {'parula','jet','hsv','hot','cool','spring','summer','autumn','winter','gray','bone','copper','pink','lines','colorcube','prism','flag','white'};
+    ListOfCPTnames = {};
     for Index = 1:length(DirEntries)
         CPTFileName = DirEntries(Index).name;
         [CPTfolder, CPTname, CPTextension] = fileparts(CPTFileName);
@@ -2353,9 +2350,9 @@ function hDisplaySettingsMenuitemCallback(hDisplaySettingsMenuitem,eventdata)
         hDisplayFigure.Visible = 'on';
 
         % make ui panel visible
-        hpanelChangeBackgroundDisplaySettings.Visible = 'on';
-        hpanelChangeVectorDisplaySettings.Visible = 'on';
-        hpanelChangeVectorDerivativeDisplaySettings.Visible = 'on';
+%         hpanelChangeBackgroundDisplaySettings.Visible = 'on';
+%         hpanelChangeVectorDisplaySettings.Visible = 'on';
+%         hpanelChangeVectorDerivativeDisplaySettings.Visible = 'on';
         %hpanelChangeApplyDisplaySettings.Visible = 'on';
         % place the variables in GUI panel
         % Background image
@@ -2395,7 +2392,7 @@ function hDisplaySettingsMenuitemCallback(hDisplaySettingsMenuitem,eventdata)
         end
         
         % derivatives
-        hDisplayVectorDerivativeRadioButton.Value = myhandles.Derivative{1,1}; % display yes/no
+         hscalarcheckbox.Value = myhandles.Derivative{1,1}; % display yes/no
         
         ListPopUpDeriv =  hpopupVecDerivativeTypeSelector.String;
         LenList=length(ListPopUpDeriv);
@@ -2413,19 +2410,19 @@ function hDisplaySettingsMenuitemCallback(hDisplaySettingsMenuitem,eventdata)
         
         hpopupVecDerivativeDisplayRangeSelector.Value=myhandles.Derivative{1,3}; %1 = minmax; 2 = +- max; 3 = custom
        
-        ListCPTDeriv=hpopupVecDerivativeCPTSelector.String; % list of CPT for derivative
+        ListCPTDeriv=hpopupScalarCPTSelector.String; % list of CPT for derivative
         LenList=length(ListCPTDeriv);
         Choice= myhandles.Derivative{1,4}; % selected derivative cpt
         for i=1:LenList
             DerivCPT=strtrim(char(ListCPTDeriv(i)));
             test = strcmp(DerivCPT,Choice);
             if test == 1
-                hpopupVecDerivativeCPTSelector.Value = i;
+                hpopupScalarCPTSelector.Value = i;
             end
         end
         
-        hMinVecDerivativeColorPalette.String = num2str(myhandles.Derivative{1,5});
-        hMaxVecDerivativeColorPalette.String = num2str(myhandles.Derivative{1,6});
+        hMinScalarColorPalette.String = num2str(myhandles.Derivative{1,5});
+        hMinScalarColorPalette.String = num2str(myhandles.Derivative{1,6});
         
         guidata(hMainFigure,myhandles);
     
@@ -2983,7 +2980,16 @@ end
 function hCloseMenuitemCallback (hCloseMenuitem, eventdata)
         disp('Saving figures...')
         saveas(hMainFigure, 'MainFigure.m', 'm');
-        saveas(hSecondFigure, 'SecondFigure.m', 'm');
+        %saveas(hSecondFigure, 'SecondFigure.m', 'm');
+        
+        saveas(hImportFigure, 'ImportFigure.m', 'm');
+        saveas(hCPFigure, 'CPFigure.m', 'm');
+        saveas(hCalibrateFigure, 'CalibrateFigure.m', 'm');
+        saveas(hRotateFigure, 'RotateFigure.m', 'm');
+        saveas(hContrastFigure, 'ContrastFigure.m', 'm');
+        saveas(hPIVSettingsFigure, 'PIVFigure.m', 'm');
+        saveas(hDisplayFigure, 'DisplayFigure.m', 'm');
+        saveas(hexportFigure, 'ExportFigure.m', 'm');
         
         % create structure of handles
         Data = guidata(hMainFigure); 
@@ -3197,6 +3203,10 @@ function hStartCorrelationCallback(hStartPIV,eventdata)
                  myhandles.ROI=ROI;
             end
             
+            param{26,1}=myhandles.ROI;
+        else
+            ROI = [1, 1, ImageWidth-1, ImageHeight-1];
+            myhandles.ROI=ROI;
             param{26,1}=myhandles.ROI;
         end
          
@@ -3953,7 +3963,7 @@ function hApplyDisplaySetting(hApplyDisplaySettingButton,eventdata)
         myhandles.VectorField{1,14} = TempList(hpopupVecColorSelector.Value); % color of vector field
         
         % derivative
-        myhandles.Derivative{1,1} = hDisplayVectorDerivativeRadioButton.Value; % display yes/no
+        myhandles.Derivative{1,1} = hscalarcheckbox.Value; % display yes/no
         
         ListPopUpDeriv =  hpopupVecDerivativeTypeSelector.String;
         myhandles.Derivative{1,2} = char(ListPopUpDeriv(hpopupVecDerivativeTypeSelector.Value)); % type of derivative
@@ -3961,14 +3971,14 @@ function hApplyDisplaySetting(hApplyDisplaySettingButton,eventdata)
         myhandles.Derivative{1,3} = hpopupVecDerivativeDisplayRangeSelector.Value; %1 = minmax; 2 = +- max; 3 = custom
         
         
-        ListCPTDeriv=hpopupVecDerivativeCPTSelector.String; % list of CPT for derivative
-        myhandles.Derivative{1,4} = strtrim(char(ListCPTDeriv(hpopupVecDerivativeCPTSelector.Value)));
+        ListCPTDeriv=hpopupScalarCPTSelector.String; % list of CPT for derivative
+        myhandles.Derivative{1,4} = strtrim(char(ListCPTDeriv(hpopupScalarCPTSelector.Value)));
         
-        myhandles.Derivative{1,5} = str2double(hMinVecDerivativeColorPalette.String); 
-        myhandles.Derivative{1,6} = str2double(hMaxVecDerivativeColorPalette.String);
+        myhandles.Derivative{1,5} = str2double(hMinScalarColorPalette.String); 
+        myhandles.Derivative{1,6} = str2double(hMaxScalarColorPalette.String);
         
-        myhandles.Derivative{1,7} = str2double(hAlphaDeriv.String); % alpha derivative
-        myhandles.Derivative{1,8} = hInterpDerivativeRadioButton.Value; % toggle interp
+        %myhandles.Derivative{1,7} = str2double(hAlphaDeriv.String); % alpha derivative
+        %myhandles.Derivative{1,8} = hInterpDerivativeRadioButton.Value; % toggle interp
         ListInterp=hpopupVecDerivativeMethodSelector.String; % list of methods
         myhandles.Derivative{1,9} = char(ListInterp(hpopupVecDerivativeMethodSelector.Value)); %text corresponding to selected method
         

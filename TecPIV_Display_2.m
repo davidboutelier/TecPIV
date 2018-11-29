@@ -36,21 +36,31 @@ function DisplayIMG(Ax,F, Datasets, Value,RawCpt,VectorField,Derivative)
             imgFramepath=fullfile(PIVStagePath,ProjectName,ImgPath,['IMG_' num2str(F) '.tif']);
             I=imread(imgFramepath);
             
-            % check if there is a mask
+            MaskDatasetNumber = Datasets{Value,17}; % dataset number where mask is
+            MaskPath = Datasets{MaskDatasetNumber,1}; % path of the mask
+                
+            DATA = load(fullfile(PIVStagePath,ProjectName,MaskPath,['Mask_',num2str(F),'.mat']));
+            ROI = DATA.ROI;
+            RoiMask = DATA.RoiMask;
+            clear DATA
+            
             MaskExist = Datasets{Value,16};
-            if MaskExist == 1 % there is a mask
-                MaskDatasetNumber = Datasets{Value,17}; % dataset number where mask is
-                MaskPath = Datasets{MaskDatasetNumber,1}; % path of the mask
-                
-                DATA = load(fullfile(PIVStagePath,ProjectName,MaskPath,['Mask_',num2str(F),'.mat']));
-                ROI = DATA.ROI;
-                RoiMask = DATA.RoiMask;
-                clear DATA
-                
-            else
-                ROI = [];
-                RoiMask = [];
-            end 
+            
+%             % check if there is a mask
+%             MaskExist = Datasets{Value,16};
+%             if MaskExist == 1 % there is a mask
+%                 MaskDatasetNumber = Datasets{Value,17}; % dataset number where mask is
+%                 MaskPath = Datasets{MaskDatasetNumber,1}; % path of the mask
+%                 
+%                 DATA = load(fullfile(PIVStagePath,ProjectName,MaskPath,['Mask_',num2str(F),'.mat']));
+%                 ROI = DATA.ROI;
+%                 RoiMask = DATA.RoiMask;
+%                 clear DATA
+%                 
+%             else
+%                 ROI = [];
+%                 RoiMask = [];
+%             end 
             
             RangeType=Derivative{1,3};
             DeriveCpt=Derivative{1,4};

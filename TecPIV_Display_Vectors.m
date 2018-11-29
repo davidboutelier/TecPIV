@@ -65,19 +65,19 @@ if DisplayDerivative == 1
     DY=abs(Y(1,1)-Y(2,1));
     
     switch DerivativeName
-        case 'dUdx'
+        case 'du/dx'
             [dUdx,~] = gradient(U,DX);
             DerivField = dUdx/(Dt);
 
-        case 'dVdy'
+        case 'dv/dy'
             [~,dVdy] = gradient(V,DY);
             DerivField = dVdy/(Dt);
 
-        case 'dUdy'
+        case 'du/dy'
             [~,dUdy] = gradient(U,DY);
             DerivField = dUdy/(Dt);
 
-        case 'dVdx'
+        case 'dv/dx'
             [dVdx,~] = gradient(V,DX);
             DerivField = dVdx/(Dt);
 
@@ -99,21 +99,21 @@ if DisplayDerivative == 1
             [~,dVdy] = gradient(V);
             DerivField = dVdy/(DY*Dt);
 
-        case 'vorticity'
+        case 'omega'
             [~,dUdy] = gradient(U,DY);
             [dVdx,~] = gradient(V,DX);
             DerivField = (dVdx - dUdy)/Dt;
 
-        case 'U'
+        case 'u'
             DerivField = U;
 
-        case 'V'
+        case 'v'
             DerivField = V;
 
-        case 'Theta'
+        case 'theta'
             [DerivField,~] = cart2pol(U,V);
 
-        case 'Rho'
+        case 'm'
             [~,DerivField] = cart2pol(U,V);
             DerivField = DerivField / Dt;
 

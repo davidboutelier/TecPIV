@@ -51,14 +51,13 @@ UseROI=param{9,1};
 
 KernelUO=param{33,1};
 
-if UseROI == 1
+% if UseROI == 1
     ROI=param{26,1};
     %disp('-> Calculating initial mask.')
     Mx(1)=ROI(1)+ROI(3);
     Mx(2)=ROI(1);
     Mx(3)=ROI(1);
     Mx(4)=ROI(1)+ROI(3);
-
 
     My(1)=ROI(2)+ROI(4);
     My(2)=ROI(2)+ROI(4);
@@ -67,12 +66,10 @@ if UseROI == 1
     
     [xout,yout,~]=TecPIV_ResampleContour(Mx,My,300);
     RoiMask=[xout,yout];
-    %whos xout
-    
+        
     xi=xout; % rename for later update
     yi=yout;
     
-   
     if debug == 1 
        figure(9);
        plot(xi,yi,'-')
@@ -82,10 +79,10 @@ if UseROI == 1
     
     
         
-else
-    ROI=[];
-    RoiMask=[];
-end
+% else
+%     ROI=[];
+%     RoiMask=[];
+% end
 
 
 
