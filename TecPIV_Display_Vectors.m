@@ -130,6 +130,50 @@ if DisplayDerivative == 1
             exx = dUdx / (DX*Dt);
             eyy = dVdy / (DY*Dt);
             DerivField = exx.*eyy - exy.*eyx; 
+            
+        case 'theta_p'
+            [dUdx,dUdy] = gradient(U,DX,DY);
+            [dVdx,dVdy] = gradient(V,DX,DY);
+            exx = dUdx/Dt;
+            eyy = dVdy/Dt;
+            exy = 0.5*(dVdx/Dt + dUdy/Dt);
+            
+            thetap = 0.5*atan(2*exy ./ (exx-eyy));
+            DerivField = thetap;
+            
+        case 'emin'
+            [dUdx,dUdy] = gradient(U,DX,DY);
+            [dVdx,dVdy] = gradient(V,DX,DY);
+            exx = dUdx/Dt;
+            eyy = dVdy/Dt;
+            exy = 0.5*(dVdx/Dt + dUdy/Dt);
+            emin = 0.5*(exx+eyy) - ((0.5*(exx-eyy)).^2 + exy.^2).^0.5;
+            DerivField = emin;
+        
+        case 'emax'
+            [dUdx,dUdy] = gradient(U,DX,DY);
+            [dVdx,dVdy] = gradient(V,DX,DY);
+            exx = dUdx/Dt;
+            eyy = dVdy/Dt;
+            exy = 0.5*(dVdx/Dt + dUdy/Dt);
+            emax = 0.5*(exx+eyy) + ((0.5*(exx-eyy)).^2 + exy.^2).^0.5;
+            DerivField = emax;
+            
+        case 'gmax'
+            [dUdx,dUdy] = gradient(U,DX,DY);
+            [dVdx,dVdy] = gradient(V,DX,DY);
+            exx = dUdx/Dt;
+            eyy = dVdy/Dt;
+            exy = 0.5*(dVdx/Dt + dUdy/Dt);
+            emax = 0.5*(exx+eyy) + ((0.5*(exx-eyy)).^2 + exy.^2).^0.5;
+            emin = 0.5*(exx+eyy) - ((0.5*(exx-eyy)).^2 + exy.^2).^0.5;
+            gmax = emax - emin;
+            DerivField = gmax;
+            
+            
+            
+            
+            
     end
     
     InterpDeriv = Derivative{1,8}; % interpolate derivative yes or no           

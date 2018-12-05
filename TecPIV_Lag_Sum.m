@@ -26,8 +26,8 @@ cd(Framepath);
 
 NumberDatasets = size(DataSets,1);
 NLag = 0;
-for j = 1:NumberDatasets
-    DatasetName =  DataSets{j,1};
+for j = 2:NumberDatasets
+    DatasetName =  DataSets{j,1}
     TF = contains(DatasetName,'Lagrangian');
     if TF == 1
         NLag = NLag+1;
