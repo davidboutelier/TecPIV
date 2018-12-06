@@ -1182,7 +1182,7 @@ for folding = true
         'Position',[210 52 40 20]);
     
     
-    hSizeSqY = uicontrol(...
+    hSizeSqX = uicontrol(...
         'Style','edit',...
         'FontSize',myhandles.MyFontSize,...
         'String','15',...
@@ -2193,9 +2193,21 @@ function hControlPointsExtractionStartCallback(hStartControlPointsExtraction,eve
 end
 function hStartRectifyCalibCallback(hStartRectifyCalib,eventdata)
         %get the parameters
-        FrameNum=str2double(hRectFrameNum.String);
-        Order=str2double(hOrderPoly.String);
+        %FrameNum=str2double(hRectFrameNum.String);
+        FrameNum = 1;
+        %Order=str2double(hOrderPoly.String);
         RectMethod=hpopupRectMethodSelector.Value;
+        
+        if RectMethod == 2 || RectMethod == 5
+            Order  = 2;
+        elseif RectMethod == 3 || RectMethod == 6
+            Order = 3;
+        elseif RectMethod == 4 || RectMethod == 7
+            Order = 4;
+        else
+            Order =1;
+        end
+            
         
         %find the dataset
         String=fullfile('Calibration');
@@ -2237,7 +2249,7 @@ function hStartRectifyCalibCallback(hStartRectifyCalib,eventdata)
         dX=str2double(hSizeSqX.String);
         dY=str2double(hSizeSqY.String);
         
-           if RectMethod == 3
+           if RectMethod == 5 || RectMethod == 6 || RectMethod == 7
                STEP=1/2;
            else
                STEP=1/1;
@@ -4065,10 +4077,7 @@ function hLagrangianSumMenuitemCallback(hLagrangianSumMenuitem,eventdata)
         ThisDataSetNumber=hpopupSourceSelector.Value; % get  the selected dataset
         SourceData = myhandles.DataSets{ThisDataSetNumber,1};
         NumberSourceData=ThisDataSetNumber;
-        
         TecPIV_Lag_Sum(myhandles.DataSets,ThisDataSetNumber)
-        
-        
         NumberDatasets = myhandles.NumberOfDatasets;
         
         NLag = 0;

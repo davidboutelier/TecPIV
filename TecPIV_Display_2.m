@@ -12,11 +12,9 @@ function DisplayIMG(Ax,F, Datasets, Value,RawCpt,VectorField,Derivative)
     TecPivFolder =  RawCpt{1,7};
     PIVStagePath=Datasets{Value,2}; % where the project was created (in the computer)
     ProjectName=Datasets{Value,3}; % name of project
-    
     Dt = Datasets{Value,7}; % time increment for the dataset
     ValueDataImg = Datasets{Value,11}; % number of the dataset containing the images
     ImgPath = Datasets{ValueDataImg,1}; % path of the images
-    
     DatasetName = Datasets{Value,1};
 
     % get the datatype from the datasets

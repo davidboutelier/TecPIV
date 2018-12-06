@@ -61,6 +61,26 @@ Neyy = griddata(XX,YY,eyy,NX,NY,'linear');
 Neyx = griddata(XX,YY,eyx,NX,NY,'linear');
 
 switch DerivativeName
+    case 'dU/dx'
+        Derive = exx;
+        GTitle = 'dU/dx';
+        NDerive = Nexx;
+        
+    case 'dU/dy'
+        Derive = exy;
+        GTitle = 'dU/dy';
+        NDerive = Nexy;
+        
+    case 'dV/dx'
+        Derive = eyx;
+        GTitle = 'dV/dx';
+        NDerive = Neyx;
+        
+    case 'dV/dy'
+        Derive = eyy;
+        GTitle = 'dV/dy';
+        NDerive = Neyy;
+        
     case 'Exy'
         Derive = 0.5*(exy+eyx +(exx.*exy+eyx.*eyy));
         GTitle = 'Exy = 0.5*(exy+eyx +(exx.*exy+eyx.*eyy))';
@@ -117,6 +137,7 @@ NDerive(mask == 0) = 0;
 NDerive(isnan(NDerive) == 1) = 0;
 
 DerivField = Derive;
+
 if RangeType == 1 % minmax            
         MaxRange=max(max(DerivField));
         MinRange=min(min(DerivField));
