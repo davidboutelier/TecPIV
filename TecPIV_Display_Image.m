@@ -22,12 +22,18 @@ I = imadjust(I,[RelativeMin RelativeMax],[0 1]);
 
 % display image
 switch RawColorMapName
-    case 'jet'
-        colormap(jet);
-        subimage(I,jet(65536));
+    
     case 'gray'
         colormap(gray);
         subimage(I,gray(65536));
+        
+    case 'bone'
+        colormap(bone);
+        subimage(I,bone(65536));
+        
+    case 'copper'
+        colormap(copper)
+        subimage(I,copper(65536));
 end
 
 % add labels for positions in pix (scale is with scale bar)
