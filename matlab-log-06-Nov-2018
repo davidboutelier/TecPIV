@@ -1,7 +1,0 @@
-Welcome. Starting a new session of TecPIV v.1801 ...
-Starting parallel pool (parpool) using the 'local' profile ...
-connected to 4 workers.
-
-Determine if computation can be performed on GPU.................... No.
-
-CUDA is not yet made to work on unix.
