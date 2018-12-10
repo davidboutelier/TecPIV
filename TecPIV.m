@@ -1331,7 +1331,6 @@ for folding = true
     
 end
 
-
 % UI Import figure
 for folding = true
     
@@ -2497,15 +2496,31 @@ function hStartRectifyCalibCallback(hStartRectifyCalib,eventdata)
         %FrameNum=str2double(hRectFrameNum.String);
         FrameNum = 1;
         %Order=str2double(hOrderPoly.String);
-        RectMethod=hpopupRectMethodSelector.Value;
+        RectificationMethod=hpopupRectMethodSelector.Value;
         
-        if RectMethod == 2 || RectMethod == 5
+        if RectificationMethod == 2 || RectificationMethod == 5
             Order  = 2;
-        elseif RectMethod == 3 || RectMethod == 6
+            if RectificationMethod == 2
+                RectMethod = 2; % polynomials
+            else
+                RectMethod = 3; % projective + polynomials
+            end
+        elseif RectificationMethod == 3 || RectificationMethod == 6
             Order = 3;
-        elseif RectMethod == 4 || RectMethod == 7
+            if RectificationMethod == 3
+                RectMethod = 2; % polynomials
+            else
+                RectMethod = 3; % projective + polynomials
+            end
+        elseif RectificationMethod == 4 || RectificationMethod == 7
             Order = 4;
+            if RectificationMethod == 4
+                RectMethod = 2; % polynomials
+            else
+                RectMethod = 3; % projective + polynomials
+            end
         else
+            RectMethod = 1; % projective
             Order =1;
         end
             
@@ -2550,7 +2565,7 @@ function hStartRectifyCalibCallback(hStartRectifyCalib,eventdata)
         dX=str2double(hSizeSqX.String);
         dY=str2double(hSizeSqY.String);
         
-           if RectMethod == 5 || RectMethod == 6 || RectMethod == 7
+           if RectMethod == 3
                STEP=1/2;
            else
                STEP=1/1;
@@ -2667,7 +2682,7 @@ function hDisplaySettingsMenuitemCallback(hDisplaySettingsMenuitem,eventdata)
             case 'image'
                 hDisplayFigureIMG.Visible = 'on';
                 
-            case 'vectors'
+            case 'vector'
                 hDisplayFigureIMG.Visible = 'on';
                 hDisplayFigure.Visible = 'on';
                 hDisplayFigureGRID.Visible = 'off';
@@ -4278,7 +4293,7 @@ function hApplyDisplaySetting(hApplyDisplaySettingButton,eventdata)
         myhandles.RawCpt{1,3} = hMaxBackgroundColorPalette.String;
         
         % vector field
-        myhandles.VectorField{1,1} = hDisplayVectorRadioButton.Value;
+        myhandles.VectorField{1,1} = hveccheckbox.Value;
         myhandles.VectorField{1,2} = [hpopupVecGridFactorSelector.Value, hpopupVecGridFactorSelector.Value];
         
         temp = hpopupVecColorScalingModeSelector.Value;

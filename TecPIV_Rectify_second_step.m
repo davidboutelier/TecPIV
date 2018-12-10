@@ -62,7 +62,7 @@ xO=x(1,nO); yO=x(2,nO);
         % Note these 2 figures are for testing - remove when working
         % create new figure with points in original image (blue crosses) and
         % target grid (red cross)
-        htemp=figure(10);
+        htemp=figure();
         plot(xO,yO,'Marker','o','MarkerFaceColor','red');
         set(gca,'YDir','reverse');
         hold on;
@@ -77,7 +77,7 @@ xO=x(1,nO); yO=x(2,nO);
 
         % create new figure with vectors from points to where it needs to
         % go
-        htemp=figure(10);
+        htemp=figure();
         quiver(x(1,:),x(2,:),tx(1,:)-x(1,:),tx(2,:)-x(2,:),0);
         set(gca,'YDir','reverse');
         hold on;
