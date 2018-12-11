@@ -272,9 +272,11 @@ s=isempty(gcp('nocreate'));
 
 if s == 1 % matlabpool is not open
     
-    % open new parallel pool with very long idle time
-    poolobj = parpool;
-    poolobj.IdleTimeout = 600000;
+    if ~ismac
+        % open new parallel pool with very long idle time
+        poolobj = parpool;
+        poolobj.IdleTimeout = 600000;
+    end
     
 %    parpool('IdleTimeout', 600000); 
 %    warning('off','MATLAB:datetime:InvalidSystemTimeZone')
