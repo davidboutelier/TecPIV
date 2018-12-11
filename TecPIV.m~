@@ -272,11 +272,9 @@ s=isempty(gcp('nocreate'));
 
 if s == 1 % matlabpool is not open
     
-    if ~ismac
-        % open new parallel pool with very long idle time
-        poolobj = parpool;
-        poolobj.IdleTimeout = 600000;
-    end
+    % open new parallel pool with very long idle time
+    poolobj = parpool;
+    poolobj.IdleTimeout = 600000;
     
 %    parpool('IdleTimeout', 600000); 
 %    warning('off','MATLAB:datetime:InvalidSystemTimeZone')
@@ -1333,6 +1331,7 @@ for folding = true
     
 end
 
+
 % UI Import figure
 for folding = true
     
@@ -2163,7 +2162,7 @@ end
 % define settings & defaults
 for folding = true
     % Define RawCptProperties
-    myhandles.RawCpt={'gray','0','65536','pix','1','pix',TecPivFolder, 1}; % cpt name, min, max, toggle pix/phys, scale (1 if toggle=pix), unit label, TecPIV folder, boolean show image(1 =yes)
+    myhandles.RawCpt={'gray','0','65536','pix','1','pix',TecPivFolder}; % cpt name, min, max, toggle pix/phys, scale (1 if toggle=pix), unit label
 
     % Define Vector field display properties
     myhandles.VectorField{1,1} = 0; % display yes/no
@@ -2498,31 +2497,15 @@ function hStartRectifyCalibCallback(hStartRectifyCalib,eventdata)
         %FrameNum=str2double(hRectFrameNum.String);
         FrameNum = 1;
         %Order=str2double(hOrderPoly.String);
-        RectificationMethod=hpopupRectMethodSelector.Value;
+        RectMethod=hpopupRectMethodSelector.Value;
         
-        if RectificationMethod == 2 || RectificationMethod == 5
+        if RectMethod == 2 || RectMethod == 5
             Order  = 2;
-            if RectificationMethod == 2
-                RectMethod = 2; % polynomials
-            else
-                RectMethod = 3; % projective + polynomials
-            end
-        elseif RectificationMethod == 3 || RectificationMethod == 6
+        elseif RectMethod == 3 || RectMethod == 6
             Order = 3;
-            if RectificationMethod == 3
-                RectMethod = 2; % polynomials
-            else
-                RectMethod = 3; % projective + polynomials
-            end
-        elseif RectificationMethod == 4 || RectificationMethod == 7
+        elseif RectMethod == 4 || RectMethod == 7
             Order = 4;
-            if RectificationMethod == 4
-                RectMethod = 2; % polynomials
-            else
-                RectMethod = 3; % projective + polynomials
-            end
         else
-            RectMethod = 1; % projective
             Order =1;
         end
             
@@ -2567,7 +2550,7 @@ function hStartRectifyCalibCallback(hStartRectifyCalib,eventdata)
         dX=str2double(hSizeSqX.String);
         dY=str2double(hSizeSqY.String);
         
-           if RectMethod == 3
+           if RectMethod == 5 || RectMethod == 6 || RectMethod == 7
                STEP=1/2;
            else
                STEP=1/1;
@@ -2684,7 +2667,7 @@ function hDisplaySettingsMenuitemCallback(hDisplaySettingsMenuitem,eventdata)
             case 'image'
                 hDisplayFigureIMG.Visible = 'on';
                 
-            case 'vector'
+            case 'vectors'
                 hDisplayFigureIMG.Visible = 'on';
                 hDisplayFigure.Visible = 'on';
                 hDisplayFigureGRID.Visible = 'off';
@@ -4286,100 +4269,61 @@ function hImgTimeCallback(hImgTime,eventdata)
   
 end
 function hApplyDisplaySetting(hApplyDisplaySettingButton,eventdata)
-    
-        CurrentDatasetNumber = hpopupSourceSelector.Value;
-        DataType = myhandles.DataSets{CurrentDatasetNumber,15};
+        % read the data in GUI and place in variables
+        % background image
+        % color palette
+        ListCPT=hpopupBackgroundCPTSelector.String;
+        myhandles.RawCpt{1,1} = char(ListCPT(hpopupBackgroundCPTSelector.Value));
+        myhandles.RawCpt{1,2} = hMinBackgroundColorPalette.String;
+        myhandles.RawCpt{1,3} = hMaxBackgroundColorPalette.String;
         
-        switch DataType
-            case 'image'
-                PlotImage = hIMGcheckbox.Value;
-                if PlotImage == 0
-                    message = 'Dataset is image. Switching to show images.';
-                    hmessage = msgbox(message);
-                    myhandles.RawCpt{1,8} = 1;
-                    hIMGcheckbox.Value = 1;
-                    
-                else
-                    ListCPT=hpopupBackgroundCPTSelector.String;
-                    myhandles.RawCpt{1,1} = char(ListCPT(hpopupBackgroundCPTSelector.Value));
-                    myhandles.RawCpt{1,2} = hMinBackgroundColorPalette.String;
-                    myhandles.RawCpt{1,3} = hMaxBackgroundColorPalette.String; 
-                    myhandles.RawCpt{1,8} = PlotImage;
-                end
-                  
-            case 'vector'
-                myhandles.RawCpt{1,8} = hIMGcheckbox.Value;
-                ListCPT=hpopupBackgroundCPTSelector.String;
-                myhandles.RawCpt{1,1} = char(ListCPT(hpopupBackgroundCPTSelector.Value));
-                myhandles.RawCpt{1,2} = hMinBackgroundColorPalette.String;
-                myhandles.RawCpt{1,3} = hMaxBackgroundColorPalette.String;
-                
-                myhandles.VectorField{1,1} = hveccheckbox.Value;
-                myhandles.VectorField{1,2} = [hpopupVecGridFactorSelector.Value, hpopupVecGridFactorSelector.Value];
-                
-                temp = hpopupVecColorScalingModeSelector.Value;
-                if temp == 1
-                    myhandles.VectorField{1,3} = 'median';
-                elseif temp == 2
-                    myhandles.VectorField{1,3} = 'max';
-                else
-                    myhandles.VectorField{1,3} = 'manual';
-                end
-                
-                myhandles.VectorField{1,4} = str2num(hVecScalingLength.String); % reference value when manual
-                
-                temp = hpopupVecColorSelector.Value;
-                TempList = hpopupVecColorSelector.String;
-                myhandles.VectorField{1,14} = TempList(hpopupVecColorSelector.Value); 
-                
-                % derivative
-                myhandles.Derivative{1,1} = hscalarcheckbox.Value; % display yes/no
-                
-                ListPopUpDeriv =  hpopupVecDerivativeTypeSelector.String;
-                myhandles.Derivative{1,2} = char(ListPopUpDeriv(hpopupVecDerivativeTypeSelector.Value)); % type of derivative
+        % vector field
+        myhandles.VectorField{1,1} = hDisplayVectorRadioButton.Value;
+        myhandles.VectorField{1,2} = [hpopupVecGridFactorSelector.Value, hpopupVecGridFactorSelector.Value];
         
-                myhandles.Derivative{1,3} = hpopupVecDerivativeDisplayRangeSelector.Value; %1 = minmax; 2 = +- max; 3 = custom
-        
-        
-                ListCPTDeriv=hpopupScalarCPTSelector.String; % list of CPT for derivative
-                myhandles.Derivative{1,4} = strtrim(char(ListCPTDeriv(hpopupScalarCPTSelector.Value)));
-        
-                myhandles.Derivative{1,5} = str2double(hMinScalarColorPalette.String); 
-                myhandles.Derivative{1,6} = str2double(hMaxScalarColorPalette.String);
-
-                ListInterp=hpopupVecDerivativeMethodSelector.String; % list of methods
-                myhandles.Derivative{1,9} = char(ListInterp(hpopupVecDerivativeMethodSelector.Value)); %text corresponding to selected method
-                
-            case 'Lagrangian'
-                myhandles.RawCpt{1,8} = hIMGcheckbox.Value;
-                ListCPT=hpopupBackgroundCPTSelector.String;
-                myhandles.RawCpt{1,1} = char(ListCPT(hpopupBackgroundCPTSelector.Value));
-                myhandles.RawCpt{1,2} = hMinBackgroundColorPalette.String;
-                myhandles.RawCpt{1,3} = hMaxBackgroundColorPalette.String;
-                
-                myhandles.VectorField{1,1} = hDisplayGridRadioButton.Value;
-                myhandles.VectorField{1,2} = [hpopupLagGridFactorSelectorG.Value, hpopupLagGridFactorSelectorG.Value];
-                temp = hpopupLagColorSelectorG.Value;
-                TempList = hpopupLagColorSelectorG.String;
-                myhandles.VectorField{1,14} = TempList(temp);
-                myhandles.VectorField{1,16} = 1; % plot as a agrid
-                
-                % derivative
-                myhandles.Derivative{1,1} = hscalarcheckboxG.Value; % display yes/no
-                ListPopUpDeriv =  hpopupVecDerivativeTypeSelectorG.String;
-                myhandles.Derivative{1,2} = char(ListPopUpDeriv(hpopupVecDerivativeTypeSelectorG.Value)); % type of derivative
-                myhandles.Derivative{1,3} = hpopupVecDerivativeDisplayRangeSelectorG.Value;
-                ListCPTDeriv=hpopupScalarCPTSelectorG.String; % list of CPT for derivative
-                myhandles.Derivative{1,4} = strtrim(char(ListCPTDeriv(hpopupScalarCPTSelectorG.Value)));
-        
-                myhandles.Derivative{1,5} = str2double(hMinScalarColorPaletteG.String); 
-                myhandles.Derivative{1,6} = str2double(hMaxScalarColorPaletteG.String);
-
-                ListInterp=hpopupVecDerivativeMethodSelectorG.String; % list of methods
-                myhandles.Derivative{1,9} = char(ListInterp(hpopupVecDerivativeMethodSelectorG.Value)); %text corresponding to selected method
-               
+        temp = hpopupVecColorScalingModeSelector.Value;
+        if temp == 1
+            myhandles.VectorField{1,3} = 'median';
+        elseif temp == 2
+            myhandles.VectorField{1,3} = 'max';
+        else
+            myhandles.VectorField{1,3} = 'manual';
         end
-                       
+ 
+        myhandles.VectorField{1,4} = str2num(hVecScalingLength.String); % reference value when manual
+        
+        temp = hpopupVecColorSelector.Value;
+        TempList = hpopupVecColorSelector.String;
+        myhandles.VectorField{1,14} = TempList(hpopupVecColorSelector.Value); % color of vector field
+        
+        % derivative
+        myhandles.Derivative{1,1} = hscalarcheckbox.Value; % display yes/no
+        
+        ListPopUpDeriv =  hpopupVecDerivativeTypeSelector.String;
+        myhandles.Derivative{1,2} = char(ListPopUpDeriv(hpopupVecDerivativeTypeSelector.Value)); % type of derivative
+        
+        myhandles.Derivative{1,3} = hpopupVecDerivativeDisplayRangeSelector.Value; %1 = minmax; 2 = +- max; 3 = custom
+        
+        
+        ListCPTDeriv=hpopupScalarCPTSelector.String; % list of CPT for derivative
+        myhandles.Derivative{1,4} = strtrim(char(ListCPTDeriv(hpopupScalarCPTSelector.Value)));
+        
+        myhandles.Derivative{1,5} = str2double(hMinScalarColorPalette.String); 
+        myhandles.Derivative{1,6} = str2double(hMaxScalarColorPalette.String);
+        
+        %myhandles.Derivative{1,7} = str2double(hAlphaDeriv.String); % alpha derivative
+        %myhandles.Derivative{1,8} = hInterpDerivativeRadioButton.Value; % toggle interp
+        ListInterp=hpopupVecDerivativeMethodSelector.String; % list of methods
+        myhandles.Derivative{1,9} = char(ListInterp(hpopupVecDerivativeMethodSelector.Value)); %text corresponding to selected method
+        
+     
+        % make second figure and its panels invisible after
+        hpanelChangeBackgroundDisplaySettings.Visible='off';
+        hpanelChangeVectorDisplaySettings.Visible='off';
+        hpanelChangeVectorDerivativeDisplaySettings.Visible='off';
+        hpanelChangeApplyDisplaySettings.Visible = 'off';
+        hSecondFigure.Visible = 'off';
+                
         X = [];
         Y = [];
         U = [];
