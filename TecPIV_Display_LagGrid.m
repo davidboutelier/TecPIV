@@ -1,6 +1,13 @@
 function TecPIV_Display_LagGrid(I,Ax,RawCpt,VectorField,Derivative,Dt,MaskExist,ROI,RoiMask,RGB,RangeType, X,Y,U,V,DX)
 %UNTITLED Summary of this function goes here
 
+hwaitfig = figure('units','pixels','position',[500 500 300 50],'windowstyle','modal');
+hwaituicont = uicontrol('style','text',...
+    'string','Updating figure. Please wait...',...
+    'units','pixels',...
+    'parent', hwaitfig,...
+    'position',[0 0 300 50]);
+
 % select and clear the ax to make new figure
 axes(Ax);
 cla(Ax); % clear the axes
@@ -155,8 +162,14 @@ else % manual mode
         Range = [MinRange, MaxRange];
 end
 
-% calculate the outline of the interpolated grid
-k=1;
+
+
+temp = VectorField{1,14};
+GridCol = temp{1,1};
+
+k=VectorField{1,2};
+
+k=VectorField{1,2};
 XX2=XX(1:k:end,1:k:end);
 YY2=YY(1:k:end,1:k:end);
 
@@ -185,7 +198,7 @@ for i=1:M-1
     for j=1:N
         VX = [XX2(j,i), XX2(j,i+1)];
         VY = [YY2(j,i), YY2(j,i+1)];
-        plot(VX,VY,'-','color','black')
+        plot(VX,VY,'-','color',GridCol)
         hold on
     end
 end
@@ -195,7 +208,7 @@ for i=1:M
     for j=1:N-1
         VX = [XX2(j,i), XX2(j+1,i)];
         VY = [YY2(j,i), YY2(j+1,i)];
-        plot(VX,VY,'-','color','black')
+        plot(VX,VY,'-','color',GridCol)
         hold on
     end
 end
@@ -204,8 +217,8 @@ daspect([1 1 1])
 % check if we plot the ROI and the mask
 if MaskExist == 1
     
-    PlotROI = 1; %PlotROI = VectorField{1,X};
-    PlotMask = 1; %PlotMask = VectorField{1,X};
+    PlotROI = VectorField{1,17};
+    PlotMask = VectorField{1,18};
                 
     if PlotROI == 1
     ROIX=[ROI(1), ROI(1)+ROI(3), ROI(1)+ROI(3), ROI(1),ROI(1)];
@@ -298,6 +311,6 @@ end
 
 
 
-
+close(hwaitfig)
 end
 

@@ -255,21 +255,19 @@ end
 % check if we plot the ROI and the mask
 if MaskExist == 1
     
-    PlotROI = 1; 
-    PlotMask = 1;
-%     PlotROI = VectorField{1,X};
-%     PlotMask = VectorField{1,X};
+    PlotROI = VectorField{1,17};
+    PlotMask = VectorField{1,18};
                 
     if PlotROI == 1
-    ROIX=[ROI(1), ROI(1)+ROI(3), ROI(1)+ROI(3), ROI(1),ROI(1)];
-    ROIY=[ROI(2), ROI(2), ROI(2)+ROI(4), ROI(2)+ROI(4),ROI(2)];
-    plot(ROIX,ROIY, 'r', 'LineWidth', 1)
-    hold on
+        ROIX=[ROI(1), ROI(1)+ROI(3), ROI(1)+ROI(3), ROI(1),ROI(1)];
+        ROIY=[ROI(2), ROI(2), ROI(2)+ROI(4), ROI(2)+ROI(4),ROI(2)];
+        plot(ROIX,ROIY, 'r', 'LineWidth', 1)
+        hold on
     end
         
     if PlotMask == 1
-    plot(RoiMask(:,1),RoiMask(:,2), 'g', 'LineWidth', 1)
-    hold on
+        plot(RoiMask(:,1),RoiMask(:,2), 'g', 'LineWidth', 1)
+        hold on
     end
 end
 

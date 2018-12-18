@@ -689,7 +689,7 @@ for folding = true
         'value', 1, ...
         'Position',[10 50 150 30]);
 
-    hroicheckbox = uicontrol(...
+    hmaskcheckbox = uicontrol(...
         'Style','checkbox', ...
         'String', 'show mask', ...
         'FontSize',MyFontSize,...
@@ -1145,7 +1145,7 @@ for folding = true
         'value', 1, ...
         'Position',[10 50 150 30]);
 
-    hroicheckboxG = uicontrol(...
+    hmaskcheckboxG = uicontrol(...
         'Style','checkbox', ...
         'String', 'show mask', ...
         'FontSize',MyFontSize,...
@@ -2182,6 +2182,8 @@ for folding = true
     myhandles.VectorField{1,14} = []; % color
     myhandles.VectorField{1,15} = []; % typevector
     myhandles.VectorField{1,16} = []; % plotasgrid
+    myhandles.VectorField{1,17} = 0; % boolean plot ROI
+    myhandles.VectorField{1,18} = 0; % boolean plot mask
     
     % Define Derivative display properties
     myhandles.Derivative{1,1} = 0;
@@ -2199,7 +2201,7 @@ for folding = true
     myhandles.NumberOfDatasets = 0; % no dataset at begining
     
     % Define defaults img
-    hpopupBackgroundCPTSelector.Value= 10; % gray is default cpt for background image
+    %hpopupBackgroundCPTSelector.Value= 10; % gray is default cpt for background image
     hMinBackgroundColorPalette.String='0';
     hMaxBackgroundColorPalette.String='65536';
 
@@ -4350,6 +4352,12 @@ function hApplyDisplaySetting(hApplyDisplaySettingButton,eventdata)
                 ListInterp=hpopupVecDerivativeMethodSelector.String; % list of methods
                 myhandles.Derivative{1,9} = char(ListInterp(hpopupVecDerivativeMethodSelector.Value)); %text corresponding to selected method
                 
+                
+                % ROI and mask display settings
+                myhandles.VectorField{1,17} = hroicheckbox.Value; % boolean plot ROI
+                myhandles.VectorField{1,18} = hmaskcheckbox.Value; % boolean plot mask
+                
+                
             case 'Lagrangian'
                 myhandles.RawCpt{1,8} = hIMGcheckbox.Value;
                 ListCPT=hpopupBackgroundCPTSelector.String;
@@ -4377,6 +4385,10 @@ function hApplyDisplaySetting(hApplyDisplaySettingButton,eventdata)
 
                 ListInterp=hpopupVecDerivativeMethodSelectorG.String; % list of methods
                 myhandles.Derivative{1,9} = char(ListInterp(hpopupVecDerivativeMethodSelectorG.Value)); %text corresponding to selected method
+                
+                % ROI and mask display settings
+                myhandles.VectorField{1,17} = hroicheckboxG.Value; % boolean plot ROI
+                myhandles.VectorField{1,18} = hmaskcheckboxG.Value; % boolean plot mask
                
         end
                        
