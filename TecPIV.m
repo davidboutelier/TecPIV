@@ -2783,7 +2783,7 @@ end
 function hExportThisFrameMenuitemCallback (hExportThisFrameMenuitem,eventdata)
     
         SourceNum=hpopupSourceSelector.Value;
-        SourceName=char(hpopupSourceSelector.String(SourceNum))
+        SourceName=char(hpopupSourceSelector.String(SourceNum));
         
         ThisDataSetNumber=hpopupSourceSelector.Value; %get  the selected dataset
         CurrentFrame=str2num(hImgNumber.String); %get the selected frame
@@ -2812,10 +2812,11 @@ function hExportThisFrameMenuitemCallback (hExportThisFrameMenuitem,eventdata)
         % create new figure
         h = figure();
         newaxes = axes('DataAspectRatio',[1 1 1]);
+        
         % Display image
         TecPIV_Display_2(newaxes,CurrentFrame,myhandles.DataSets,ThisDataSetNumber,myhandles.RawCpt,myhandles.VectorField,myhandles.Derivative);
         
-        Colormap = myhandles.Derivative{1,4}
+        Colormap = myhandles.Derivative{1,4};
         ListMATLABCPT={'parula','jet','hsv','hot','cool','spring','summer',...
                 'autumn','winter','gray','bone','copper','pink','lines',...
                 'colorcube','prism','flag','white'};
@@ -2849,6 +2850,8 @@ function hExportThisFrameMenuitemCallback (hExportThisFrameMenuitem,eventdata)
                 filename=strcat('Raw-Rectified-Vectors-IMG_',hImgNumber.String,'.pdf')
             case (fullfile('Raw','Vectors'))
                 filename=strcat('Raw-Vectors-IMG_',hImgNumber.String,'.pdf')
+            case (fullfile('Raw', 'Vectors','Lagrangian_Sum_1'))
+                filename=strcat('Raw-Vectors-Lagrangian_',hImgNumber.String,'.pdf')
         end
 
        print(h,'-painters','-dpdf',fullfile(ExportFolderName,filename))  
