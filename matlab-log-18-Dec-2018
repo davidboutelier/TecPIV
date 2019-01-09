@@ -1,0 +1,301 @@
+Welcome. Starting a new session of TecPIV v.1801 ...
+Starting parallel pool (parpool) using the 'local' profile ...
+connected to 4 workers.
+
+Determine if computation can be performed on GPU.................... No.
+
+CUDA is not yet made to work on unix.
+
+Importing images:  000%  |                            | 0/8 [00:00:00<Inf:NaN:NaN, Inf it/s]Importing images:  012%  |███▌                        | 1/8 [00:00:00<00:00:00, 21.44 s/it]Importing images:  075%  |█████████████████████       | 6/8 [00:00:00<00:00:00, 22.63 it/s]Importing images:  100%  |████████████████████████████| 8/8 [00:00:00<00:00:00, 26.41 it/s]-> 8 TIF images imported
+-> Image Height is 4912 pixels
+-> Image Width is 7360 pixels
+
+Importing images:  000%  |                            | 0/1 [00:00:00<Inf:NaN:NaN, Inf it/s]Importing images:  100%  |████████████████████████████| 1/1 [00:00:00<00:00:00, 21.44 s/it]-> 1 TIF images imported
+-> Image Height is 4912 pixels
+-> Image Width is 7360 pixels
+
+DataFolder =
+
+    'Calibration'
+
+Searching for control points...
+899 control points found in calibration image 1 
+
+Starting calculation of rectification function...
+Resolution of rectified image will be: 6.59 pix/mm
+Calculating rectification function...
+Rectifying calibration image...
+Saving rectification function...
+Saving rectified calibration image...
+
+Searching for control points...
+Rectification error (95% confidence interval) is:[10.14 11.47] pix 
+
+Saving cropped image...
+Rectifying images:  000%  |                           | 0/8 [00:00:00<Inf:NaN:NaN, Inf it/s]
+Rectifying images:  000%  |                           | 0/8 [00:00:00<Inf:NaN:NaN, Inf s/it]Rectifying images:  000%  |                           | 0/8 [00:00:01<Inf:NaN:NaN, Inf s/it]Rectifying images:  000%  |                           | 0/8 [00:00:02<Inf:NaN:NaN, Inf s/it]Rectifying images:  000%  |                           | 0/8 [00:00:03<Inf:NaN:NaN, Inf s/it]Rectifying images:  000%  |                           | 0/8 [00:00:04<Inf:NaN:NaN, Inf s/it]Rectifying images:  000%  |                           | 0/8 [00:00:05<Inf:NaN:NaN, Inf s/it]Rectifying images:  000%  |                           | 0/8 [00:00:06<Inf:NaN:NaN, Inf s/it]Rectifying images:  000%  |                           | 0/8 [00:00:07<Inf:NaN:NaN, Inf s/it]Rectifying images:  000%  |                           | 0/8 [00:00:08<Inf:NaN:NaN, Inf s/it]Rectifying images:  000%  |                           | 0/8 [00:00:09<Inf:NaN:NaN, Inf s/it]Rectifying images:  000%  |                           | 0/8 [00:00:10<Inf:NaN:NaN, Inf s/it]Rectifying images:  000%  |                           | 0/8 [00:00:11<Inf:NaN:NaN, Inf s/it]Rectifying images:  012%  |███▍                       | 1/8 [00:00:11<00:01:19, 11.36 s/it]Rectifying images:  050%  |█████████████▌             | 4/8 [00:00:11<00:00:11, 2.94 s/it]Rectifying images:  050%  |█████████████▌             | 4/8 [00:00:12<00:00:12, 3.19 s/it]Rectifying images:  050%  |█████████████▌             | 4/8 [00:00:13<00:00:13, 3.44 s/it]Rectifying images:  050%  |█████████████▌             | 4/8 [00:00:14<00:00:14, 3.69 s/it]Rectifying images:  050%  |█████████████▌             | 4/8 [00:00:15<00:00:15, 3.94 s/it]Rectifying images:  050%  |█████████████▌             | 4/8 [00:00:16<00:00:16, 4.19 s/it]Rectifying images:  050%  |█████████████▌             | 4/8 [00:00:17<00:00:17, 4.45 s/it]Rectifying images:  050%  |█████████████▌             | 4/8 [00:00:18<00:00:18, 4.70 s/it]Rectifying images:  050%  |█████████████▌             | 4/8 [00:00:19<00:00:19, 4.95 s/it]Rectifying images:  050%  |█████████████▌             | 4/8 [00:00:20<00:00:20, 5.20 s/it]Rectifying images:  062%  |████████████████▉          | 5/8 [00:00:21<00:00:12, 4.32 s/it]Rectifying images:  100%  |███████████████████████████| 8/8 [00:00:22<00:00:00, 2.80 s/it]Rectifying images:  100%  |███████████████████████████| 8/8 [00:00:22<00:00:00, 2.80 s/it]8 images processed in 22.56 s
+Inverting Image ...
+Subtracting Background ...
+Normalizing intensity ...
+Starting PIV corelation...
+  
+Image pair: 1/7 (14.2857%)
+-> Preprocess images
+-> Calculate vectors
+-> Filter Universal outliers - Discarded vectors: 0/3657 (0%)
+-> Interpolate the discarded vectors
+-> Calculate deformation of ROI
+  
+Image pair: 2/7 (28.5714%)
+-> Preprocess images
+-> Calculate vectors
+-> Filter Universal outliers - Discarded vectors: 0/3657 (0%)
+-> Interpolate the discarded vectors
+-> Calculate deformation of ROI
+  
+Image pair: 3/7 (42.8571%)
+-> Preprocess images
+-> Calculate vectors
+-> Filter Universal outliers - Discarded vectors: 0/3657 (0%)
+-> Interpolate the discarded vectors
+-> Calculate deformation of ROI
+  
+Image pair: 4/7 (57.1429%)
+-> Preprocess images
+-> Calculate vectors
+-> Filter Universal outliers - Discarded vectors: 0/3657 (0%)
+-> Interpolate the discarded vectors
+-> Calculate deformation of ROI
+  
+Image pair: 5/7 (71.4286%)
+-> Preprocess images
+-> Calculate vectors
+-> Filter Universal outliers - Discarded vectors: 0/3657 (0%)
+-> Interpolate the discarded vectors
+-> Calculate deformation of ROI
+  
+Image pair: 6/7 (85.7143%)
+-> Preprocess images
+-> Calculate vectors
+-> Filter Universal outliers - Discarded vectors: 0/3657 (0%)
+-> Interpolate the discarded vectors
+-> Calculate deformation of ROI
+  
+Image pair: 7/7 (100%)
+-> Preprocess images
+-> Calculate vectors
+-> Filter Universal outliers - Discarded vectors: 0/3657 (0%)
+-> Interpolate the discarded vectors
+-> Calculate deformation of ROI
+
+ans =
+
+  6×17 <a href="matlab:helpPopup cell" style="font-weight:bold">cell</a> array
+
+  Columns 1 through 5
+
+    {0×0 double         }    {0×0 double         }    {0×0 double}    {0×0 double}    {0×0 double}
+    {'Raw'              }    {'/media/DATA2/PI…'}    {'DDDDEEEE'}    {[       8]}    {[    7360]}
+    {'Calibration'      }    {'/media/DATA2/PI…'}    {'DDDDEEEE'}    {[       1]}    {[    7360]}
+    {'Calibration/Rec…'}    {'/media/DATA2/PI…'}    {'DDDDEEEE'}    {[       1]}    {[    9742]}
+    {'Raw/Rectified'    }    {'/media/DATA2/PI…'}    {'DDDDEEEE'}    {[       8]}    {[    3129]}
+    {'Raw/Rectified/V…'}    {'/media/DATA2/PI…'}    {'DDDDEEEE'}    {[       7]}    {0×0 double}
+
+  Columns 6 through 11
+
+    {0×0 double}    {0×0 double}    {0×0 double}    {0×0 double}    {0×0 double}    {0×0 double}
+    {[    4912]}    {[       1]}    {[       1]}    {[       1]}    {[       8]}    {[       2]}
+    {[    4912]}    {[       1]}    {[       1]}    {[       1]}    {[       1]}    {[       3]}
+    {[    6019]}    {[       1]}    {[       1]}    {[       1]}    {[       1]}    {[       4]}
+    {[    3321]}    {[       1]}    {[       1]}    {[       1]}    {[       8]}    {[       5]}
+    {0×0 double}    {[       1]}    {[       1]}    {[       2]}    {[       8]}    {[       5]}
+
+  Columns 12 through 17
+
+    {0×0 double}    {0×0 double}    {0×0 double}    {0×0 double}    {0×0 double}    {0×0 double}
+    {[       1]}    {'pix'     }    {'pix'     }    {'image'   }    {[       0]}    {0×0 double}
+    {[       1]}    {'pix'     }    {'pix'     }    {'image'   }    {[       0]}    {0×0 double}
+    {[  6.5895]}    {'phys'    }    {'mm'      }    {'image'   }    {[       0]}    {0×0 double}
+    {[  6.5895]}    {'phys'    }    {'mm'      }    {'image'   }    {[       0]}    {0×0 double}
+    {0×0 double}    {0×0 double}    {0×0 double}    {'vector'  }    {[       1]}    {[       6]}
+
+
+DatasetName =
+
+    'Raw'
+
+
+DatasetName =
+
+    'Calibration'
+
+
+DatasetName =
+
+    'Calibration/Rectified'
+
+
+DatasetName =
+
+    'Raw/Rectified'
+
+
+DatasetName =
+
+    'Raw/Rectified/Vectors'
+
+
+Summing vectors:  000%  |                             | 0/7 [00:00:00<Inf:NaN:NaN, Inf it/s]Summing vectors:  014%  |████▎                        | 1/7 [00:00:00<00:00:00, 58.84 s/it]Summing vectors:  028%  |████████▍                    | 2/7 [00:00:00<00:00:00, 6.04 it/s]Summing vectors:  042%  |████████████▌                | 3/7 [00:00:00<00:00:00, 4.90 it/s]Summing vectors:  057%  |████████████████▋            | 4/7 [00:00:00<00:00:00, 4.80 it/s]Summing vectors:  071%  |████████████████████▊        | 5/7 [00:00:01<00:00:00, 4.83 it/s]Summing vectors:  085%  |████████████████████████▉    | 6/7 [00:00:01<00:00:00, 4.81 it/s]Summing vectors:  100%  |█████████████████████████████| 7/7 [00:00:01<00:00:00, 4.72 it/s]
+SaveDatasets =
+
+  7×18 <a href="matlab:helpPopup cell" style="font-weight:bold">cell</a> array
+
+  Columns 1 through 5
+
+    {0×0 double         }    {0×0 double         }    {0×0 double}    {0×0 double}    {0×0 double}
+    {'Raw'              }    {'/media/DATA2/PI…'}    {'DDDDEEEE'}    {[       8]}    {[    7360]}
+    {'Calibration'      }    {'/media/DATA2/PI…'}    {'DDDDEEEE'}    {[       1]}    {[    7360]}
+    {'Calibration/Rec…'}    {'/media/DATA2/PI…'}    {'DDDDEEEE'}    {[       1]}    {[    9742]}
+    {'Raw/Rectified'    }    {'/media/DATA2/PI…'}    {'DDDDEEEE'}    {[       8]}    {[    3129]}
+    {'Raw/Rectified/V…'}    {'/media/DATA2/PI…'}    {'DDDDEEEE'}    {[       7]}    {0×0 double}
+    {'Raw/Rectified/V…'}    {'/media/DATA2/PI…'}    {'DDDDEEEE'}    {[       7]}    {0×0 double}
+
+  Columns 6 through 11
+
+    {0×0 double}    {0×0 double}    {0×0 double}    {0×0 double}    {0×0 double}    {0×0 double}
+    {[    4912]}    {[       1]}    {[       1]}    {[       1]}    {[       8]}    {[       2]}
+    {[    4912]}    {[       1]}    {[       1]}    {[       1]}    {[       1]}    {[       3]}
+    {[    6019]}    {[       1]}    {[       1]}    {[       1]}    {[       1]}    {[       4]}
+    {[    3321]}    {[       1]}    {[       1]}    {[       1]}    {[       8]}    {[       5]}
+    {0×0 double}    {[       1]}    {[       1]}    {[       2]}    {[       8]}    {[       5]}
+    {0×0 double}    {[       1]}    {[       1]}    {[       2]}    {[       8]}    {[       5]}
+
+  Columns 12 through 17
+
+    {0×0 double}    {0×0 double}    {0×0 double}    {0×0 double  }    {0×0 double}    {0×0 double}
+    {[       1]}    {'pix'     }    {'pix'     }    {'image'     }    {[       0]}    {0×0 double}
+    {[       1]}    {'pix'     }    {'pix'     }    {'image'     }    {[       0]}    {0×0 double}
+    {[  6.5895]}    {'phys'    }    {'mm'      }    {'image'     }    {[       0]}    {0×0 double}
+    {[  6.5895]}    {'phys'    }    {'mm'      }    {'image'     }    {[       0]}    {0×0 double}
+    {0×0 double}    {0×0 double}    {0×0 double}    {'vector'    }    {[       1]}    {[       6]}
+    {0×0 double}    {0×0 double}    {0×0 double}    {'Lagrangian'}    {[       1]}    {[       6]}
+
+  Column 18
+
+    {0×0 double}
+    {0×0 double}
+    {0×0 double}
+    {0×0 double}
+    {0×0 double}
+    {0×0 double}
+    {[       6]}
+
+{Brace indexing is not supported for variables of this type.
+
+Error in <a href="matlab:matlab.internal.language.introspective.errorDocCallback('TecPIV_Display_LagGrid', '/home/david/Documents/MATLAB/TecPIV/TecPIV_Display_LagGrid.m', 162)" style="font-weight:bold">TecPIV_Display_LagGrid</a> (<a href="matlab: opentoline('/home/david/Documents/MATLAB/TecPIV/TecPIV_Display_LagGrid.m',162,0)">line 162</a>)
+GridCol = temp{1,1};
+
+Error in <a href="matlab:matlab.internal.language.introspective.errorDocCallback('TecPIV_Display_2', '/home/david/Documents/MATLAB/TecPIV/TecPIV_Display_2.m', 164)" style="font-weight:bold">TecPIV_Display_2</a> (<a href="matlab: opentoline('/home/david/Documents/MATLAB/TecPIV/TecPIV_Display_2.m',164,0)">line 164</a>)
+            TecPIV_Display_LagGrid(I,Ax,RawCpt,VectorField,Derivative,Dt,MaskExist,ROI,RoiMask,RGB,RangeType,
+            X,Y,U,V,DX)
+
+Error in <a href="matlab:matlab.internal.language.introspective.errorDocCallback('TecPIV/hSliderCallback', '/home/david/Documents/MATLAB/TecPIV/TecPIV.m', 4083)" style="font-weight:bold">TecPIV/hSliderCallback</a> (<a href="matlab: opentoline('/home/david/Documents/MATLAB/TecPIV/TecPIV.m',4083,0)">line 4083</a>)
+            TecPIV_Display_2(hPlotAxes,NewFrame,myhandles.DataSets,ThisDataSetNumber,myhandles.RawCpt,myhandles.VectorField,myhandles.Derivative);} 
+Error while evaluating UIControl Callback.
+
+{Brace indexing is not supported for variables of this type.
+
+Error in <a href="matlab:matlab.internal.language.introspective.errorDocCallback('TecPIV_Display_LagGrid', '/home/david/Documents/MATLAB/TecPIV/TecPIV_Display_LagGrid.m', 162)" style="font-weight:bold">TecPIV_Display_LagGrid</a> (<a href="matlab: opentoline('/home/david/Documents/MATLAB/TecPIV/TecPIV_Display_LagGrid.m',162,0)">line 162</a>)
+GridCol = temp{1,1};
+
+Error in <a href="matlab:matlab.internal.language.introspective.errorDocCallback('TecPIV_Display_2', '/home/david/Documents/MATLAB/TecPIV/TecPIV_Display_2.m', 164)" style="font-weight:bold">TecPIV_Display_2</a> (<a href="matlab: opentoline('/home/david/Documents/MATLAB/TecPIV/TecPIV_Display_2.m',164,0)">line 164</a>)
+            TecPIV_Display_LagGrid(I,Ax,RawCpt,VectorField,Derivative,Dt,MaskExist,ROI,RoiMask,RGB,RangeType,
+            X,Y,U,V,DX)
+
+Error in <a href="matlab:matlab.internal.language.introspective.errorDocCallback('TecPIV/hSliderCallback', '/home/david/Documents/MATLAB/TecPIV/TecPIV.m', 4083)" style="font-weight:bold">TecPIV/hSliderCallback</a> (<a href="matlab: opentoline('/home/david/Documents/MATLAB/TecPIV/TecPIV.m',4083,0)">line 4083</a>)
+            TecPIV_Display_2(hPlotAxes,NewFrame,myhandles.DataSets,ThisDataSetNumber,myhandles.RawCpt,myhandles.VectorField,myhandles.Derivative);} 
+Error while evaluating UIControl Callback.
+
+{Brace indexing is not supported for variables of this type.
+
+Error in <a href="matlab:matlab.internal.language.introspective.errorDocCallback('TecPIV_Display_LagGrid', '/home/david/Documents/MATLAB/TecPIV/TecPIV_Display_LagGrid.m', 162)" style="font-weight:bold">TecPIV_Display_LagGrid</a> (<a href="matlab: opentoline('/home/david/Documents/MATLAB/TecPIV/TecPIV_Display_LagGrid.m',162,0)">line 162</a>)
+GridCol = temp{1,1};
+
+Error in <a href="matlab:matlab.internal.language.introspective.errorDocCallback('TecPIV_Display_2', '/home/david/Documents/MATLAB/TecPIV/TecPIV_Display_2.m', 164)" style="font-weight:bold">TecPIV_Display_2</a> (<a href="matlab: opentoline('/home/david/Documents/MATLAB/TecPIV/TecPIV_Display_2.m',164,0)">line 164</a>)
+            TecPIV_Display_LagGrid(I,Ax,RawCpt,VectorField,Derivative,Dt,MaskExist,ROI,RoiMask,RGB,RangeType,
+            X,Y,U,V,DX)
+
+Error in <a href="matlab:matlab.internal.language.introspective.errorDocCallback('TecPIV/hSliderCallback', '/home/david/Documents/MATLAB/TecPIV/TecPIV.m', 4083)" style="font-weight:bold">TecPIV/hSliderCallback</a> (<a href="matlab: opentoline('/home/david/Documents/MATLAB/TecPIV/TecPIV.m',4083,0)">line 4083</a>)
+            TecPIV_Display_2(hPlotAxes,NewFrame,myhandles.DataSets,ThisDataSetNumber,myhandles.RawCpt,myhandles.VectorField,myhandles.Derivative);} 
+Error while evaluating UIControl Callback.
+
+{Brace indexing is not supported for variables of this type.
+
+Error in <a href="matlab:matlab.internal.language.introspective.errorDocCallback('TecPIV_Display_LagGrid', '/home/david/Documents/MATLAB/TecPIV/TecPIV_Display_LagGrid.m', 162)" style="font-weight:bold">TecPIV_Display_LagGrid</a> (<a href="matlab: opentoline('/home/david/Documents/MATLAB/TecPIV/TecPIV_Display_LagGrid.m',162,0)">line 162</a>)
+GridCol = temp{1,1};
+
+Error in <a href="matlab:matlab.internal.language.introspective.errorDocCallback('TecPIV_Display_2', '/home/david/Documents/MATLAB/TecPIV/TecPIV_Display_2.m', 164)" style="font-weight:bold">TecPIV_Display_2</a> (<a href="matlab: opentoline('/home/david/Documents/MATLAB/TecPIV/TecPIV_Display_2.m',164,0)">line 164</a>)
+            TecPIV_Display_LagGrid(I,Ax,RawCpt,VectorField,Derivative,Dt,MaskExist,ROI,RoiMask,RGB,RangeType,
+            X,Y,U,V,DX)
+
+Error in <a href="matlab:matlab.internal.language.introspective.errorDocCallback('TecPIV/hSliderCallback', '/home/david/Documents/MATLAB/TecPIV/TecPIV.m', 4083)" style="font-weight:bold">TecPIV/hSliderCallback</a> (<a href="matlab: opentoline('/home/david/Documents/MATLAB/TecPIV/TecPIV.m',4083,0)">line 4083</a>)
+            TecPIV_Display_2(hPlotAxes,NewFrame,myhandles.DataSets,ThisDataSetNumber,myhandles.RawCpt,myhandles.VectorField,myhandles.Derivative);} 
+Error while evaluating UIControl Callback.
+
+{Brace indexing is not supported for variables of this type.
+
+Error in <a href="matlab:matlab.internal.language.introspective.errorDocCallback('TecPIV_Display_LagGrid', '/home/david/Documents/MATLAB/TecPIV/TecPIV_Display_LagGrid.m', 162)" style="font-weight:bold">TecPIV_Display_LagGrid</a> (<a href="matlab: opentoline('/home/david/Documents/MATLAB/TecPIV/TecPIV_Display_LagGrid.m',162,0)">line 162</a>)
+GridCol = temp{1,1};
+
+Error in <a href="matlab:matlab.internal.language.introspective.errorDocCallback('TecPIV_Display_2', '/home/david/Documents/MATLAB/TecPIV/TecPIV_Display_2.m', 164)" style="font-weight:bold">TecPIV_Display_2</a> (<a href="matlab: opentoline('/home/david/Documents/MATLAB/TecPIV/TecPIV_Display_2.m',164,0)">line 164</a>)
+            TecPIV_Display_LagGrid(I,Ax,RawCpt,VectorField,Derivative,Dt,MaskExist,ROI,RoiMask,RGB,RangeType,
+            X,Y,U,V,DX)
+
+Error in <a href="matlab:matlab.internal.language.introspective.errorDocCallback('TecPIV/hSliderCallback', '/home/david/Documents/MATLAB/TecPIV/TecPIV.m', 4083)" style="font-weight:bold">TecPIV/hSliderCallback</a> (<a href="matlab: opentoline('/home/david/Documents/MATLAB/TecPIV/TecPIV.m',4083,0)">line 4083</a>)
+            TecPIV_Display_2(hPlotAxes,NewFrame,myhandles.DataSets,ThisDataSetNumber,myhandles.RawCpt,myhandles.VectorField,myhandles.Derivative);} 
+Error while evaluating UIControl Callback.
+
+{Error using <a href="matlab:matlab.internal.language.introspective.errorDocCallback('uicontrol')" style="font-weight:bold">uicontrol</a>
+Value must be a handle.
+
+Error in <a href="matlab:matlab.internal.language.introspective.errorDocCallback('TecPIV_Display_LagGrid', '/home/david/Documents/MATLAB/TecPIV/TecPIV_Display_LagGrid.m', 5)" style="font-weight:bold">TecPIV_Display_LagGrid</a> (<a href="matlab: opentoline('/home/david/Documents/MATLAB/TecPIV/TecPIV_Display_LagGrid.m',5,0)">line 5</a>)
+uicontrol('style','text',...
+
+Error in <a href="matlab:matlab.internal.language.introspective.errorDocCallback('TecPIV_Display_2', '/home/david/Documents/MATLAB/TecPIV/TecPIV_Display_2.m', 164)" style="font-weight:bold">TecPIV_Display_2</a> (<a href="matlab: opentoline('/home/david/Documents/MATLAB/TecPIV/TecPIV_Display_2.m',164,0)">line 164</a>)
+            TecPIV_Display_LagGrid(I,Ax,RawCpt,VectorField,Derivative,Dt,MaskExist,ROI,RoiMask,RGB,RangeType,
+            X,Y,U,V,DX)
+
+Error in <a href="matlab:matlab.internal.language.introspective.errorDocCallback('TecPIV/hApplyDisplaySetting', '/home/david/Documents/MATLAB/TecPIV/TecPIV.m', 4459)" style="font-weight:bold">TecPIV/hApplyDisplaySetting</a> (<a href="matlab: opentoline('/home/david/Documents/MATLAB/TecPIV/TecPIV.m',4459,0)">line 4459</a>)
+        TecPIV_Display_2(hPlotAxes,CurrentFrame,myhandles.DataSets,ThisDataSetNumber,myhandles.RawCpt,myhandles.VectorField,myhandles.Derivative);} 
+Error while evaluating UIControl Callback.
+
+{Error using <a href="matlab:matlab.internal.language.introspective.errorDocCallback('uicontrol')" style="font-weight:bold">uicontrol</a>
+Value must be a handle.
+
+Error in <a href="matlab:matlab.internal.language.introspective.errorDocCallback('TecPIV_Display_LagGrid', '/home/david/Documents/MATLAB/TecPIV/TecPIV_Display_LagGrid.m', 5)" style="font-weight:bold">TecPIV_Display_LagGrid</a> (<a href="matlab: opentoline('/home/david/Documents/MATLAB/TecPIV/TecPIV_Display_LagGrid.m',5,0)">line 5</a>)
+hwaituicont = uicontrol('style','text',...
+
+Error in <a href="matlab:matlab.internal.language.introspective.errorDocCallback('TecPIV_Display_2', '/home/david/Documents/MATLAB/TecPIV/TecPIV_Display_2.m', 164)" style="font-weight:bold">TecPIV_Display_2</a> (<a href="matlab: opentoline('/home/david/Documents/MATLAB/TecPIV/TecPIV_Display_2.m',164,0)">line 164</a>)
+            TecPIV_Display_LagGrid(I,Ax,RawCpt,VectorField,Derivative,Dt,MaskExist,ROI,RoiMask,RGB,RangeType,
+            X,Y,U,V,DX)
+
+Error in <a href="matlab:matlab.internal.language.introspective.errorDocCallback('TecPIV/hApplyDisplaySetting', '/home/david/Documents/MATLAB/TecPIV/TecPIV.m', 4459)" style="font-weight:bold">TecPIV/hApplyDisplaySetting</a> (<a href="matlab: opentoline('/home/david/Documents/MATLAB/TecPIV/TecPIV.m',4459,0)">line 4459</a>)
+        TecPIV_Display_2(hPlotAxes,CurrentFrame,myhandles.DataSets,ThisDataSetNumber,myhandles.RawCpt,myhandles.VectorField,myhandles.Derivative);} 
+Error while evaluating UIControl Callback.
+
+{Brace indexing is not supported for variables of this type.
+
+Error in <a href="matlab:matlab.internal.language.introspective.errorDocCallback('TecPIV_Display_LagGrid', '/home/david/Documents/MATLAB/TecPIV/TecPIV_Display_LagGrid.m', 169)" style="font-weight:bold">TecPIV_Display_LagGrid</a> (<a href="matlab: opentoline('/home/david/Documents/MATLAB/TecPIV/TecPIV_Display_LagGrid.m',169,0)">line 169</a>)
+GridCol = temp{1,1};
+
+Error in <a href="matlab:matlab.internal.language.introspective.errorDocCallback('TecPIV_Display_2', '/home/david/Documents/MATLAB/TecPIV/TecPIV_Display_2.m', 164)" style="font-weight:bold">TecPIV_Display_2</a> (<a href="matlab: opentoline('/home/david/Documents/MATLAB/TecPIV/TecPIV_Display_2.m',164,0)">line 164</a>)
+            TecPIV_Display_LagGrid(I,Ax,RawCpt,VectorField,Derivative,Dt,MaskExist,ROI,RoiMask,RGB,RangeType,
+            X,Y,U,V,DX)
+
+Error in <a href="matlab:matlab.internal.language.introspective.errorDocCallback('TecPIV/hSliderCallback', '/home/david/Documents/MATLAB/TecPIV/TecPIV.m', 4083)" style="font-weight:bold">TecPIV/hSliderCallback</a> (<a href="matlab: opentoline('/home/david/Documents/MATLAB/TecPIV/TecPIV.m',4083,0)">line 4083</a>)
+            TecPIV_Display_2(hPlotAxes,NewFrame,myhandles.DataSets,ThisDataSetNumber,myhandles.RawCpt,myhandles.VectorField,myhandles.Derivative);} 
+Error while evaluating UIControl Callback.
+
+Saving figures...
+Parallel pool using the 'local' profile is shutting down.
+Closing now... bye bye

@@ -29,6 +29,8 @@ VectorDensity = VectorField{1,2};
 VectorDisplayMode = VectorField{1,3};
 VectorScale = VectorField{1,4};
 
+VectorCol = char(VectorField{1,14});
+
 if strcmp(VectorDisplayMode,'max') == 0 && strcmp(VectorDisplayMode,'mean') == 0
     VectorDisplayMode=VectorScale;
 end
@@ -48,10 +50,10 @@ if DisplayDerivative == 1
     V = VectorField{1,8};
     
     InterpMethod = 3;
-    X = inpaint_nans(X,InterpMethod);
-    Y = inpaint_nans(Y,InterpMethod);
-    U = inpaint_nans(U,InterpMethod);
-    V = inpaint_nans(V,InterpMethod); 
+    XX = inpaint_nans(X,InterpMethod);
+    YY = inpaint_nans(Y,InterpMethod);
+    UU = inpaint_nans(U,InterpMethod);
+    VV = inpaint_nans(V,InterpMethod); 
         
     % get the minmax of vector field
     xmin=min2(X);
@@ -66,65 +68,65 @@ if DisplayDerivative == 1
     
     switch DerivativeName
         case 'du/dx'
-            [dUdx,~] = gradient(U,DX);
+            [dUdx,~] = gradient(UU,DX);
             DerivField = dUdx/(Dt);
 
         case 'dv/dy'
-            [~,dVdy] = gradient(V,DY);
+            [~,dVdy] = gradient(VV,DY);
             DerivField = dVdy/(Dt);
 
         case 'du/dy'
-            [~,dUdy] = gradient(U,DY);
+            [~,dUdy] = gradient(UU,DY);
             DerivField = dUdy/(Dt);
 
         case 'dv/dx'
-            [dVdx,~] = gradient(V,DX);
+            [dVdx,~] = gradient(VV,DX);
             DerivField = dVdx/(Dt);
 
         case 'exx'
-            [dUdx,~] = gradient(U,DX);
+            [dUdx,~] = gradient(UU,DX);
             DerivField = dUdx/(Dt);
 
         case 'exy'
-            [~,dUdy] = gradient(U,DY);
-            [dVdx,~] = gradient(V,DX);
+            [~,dUdy] = gradient(UU,DY);
+            [dVdx,~] = gradient(VU,DX);
             DerivField = 0.5*(dVdx/Dt + dUdy/Dt);
 
         case 'eyx'
-            [~,dUdy] = gradient(U);
-            [dVdx,~] = gradient(V);
+            [~,dUdy] = gradient(UU);
+            [dVdx,~] = gradient(VV);
             DerivField = 0.5*(dVdx/(DX*Dt) + dUdy/(DY*Dt));
 
         case 'eyy'
-            [~,dVdy] = gradient(V);
+            [~,dVdy] = gradient(VV);
             DerivField = dVdy/(DY*Dt);
 
         case 'omega'
-            [~,dUdy] = gradient(U,DY);
-            [dVdx,~] = gradient(V,DX);
+            [~,dUdy] = gradient(UU,DY);
+            [dVdx,~] = gradient(VV,DX);
             DerivField = (dVdx - dUdy)/Dt;
 
         case 'u'
-            DerivField = U;
+            DerivField = UU;
 
         case 'v'
-            DerivField = V;
+            DerivField = VV;
 
         case 'theta'
-            [DerivField,~] = cart2pol(U,V);
+            [DerivField,~] = cart2pol(UU,VV);
 
         case 'm'
-            [~,DerivField] = cart2pol(U,V);
+            [~,DerivField] = cart2pol(UU,VV);
             DerivField = DerivField / Dt;
 
         case 'Ie'
-            [dUdx,~] = gradient(U);
-            [~,dVdy] = gradient(V);
+            [dUdx,~] = gradient(UU);
+            [~,dVdy] = gradient(VV);
             DerivField = dUdx / (DX*Dt) + dVdy / (DY*Dt); 
 
         case 'IIe'
-            [dUdx,dUdy] = gradient(U);
-            [dVdx,dVdy] = gradient(V);
+            [dUdx,dUdy] = gradient(UU);
+            [dVdx,dVdy] = gradient(VV);
             exy = 0.5* (dVdx/(DX*Dt) + dUdy/(DY*Dt));
             eyx = exy;
             exx = dUdx / (DX*Dt);
@@ -132,8 +134,8 @@ if DisplayDerivative == 1
             DerivField = exx.*eyy - exy.*eyx; 
             
         case 'theta_p'
-            [dUdx,dUdy] = gradient(U,DX,DY);
-            [dVdx,dVdy] = gradient(V,DX,DY);
+            [dUdx,dUdy] = gradient(UU,DX,DY);
+            [dVdx,dVdy] = gradient(VV,DX,DY);
             exx = dUdx/Dt;
             eyy = dVdy/Dt;
             exy = 0.5*(dVdx/Dt + dUdy/Dt);
@@ -142,8 +144,8 @@ if DisplayDerivative == 1
             DerivField = thetap;
             
         case 'emin'
-            [dUdx,dUdy] = gradient(U,DX,DY);
-            [dVdx,dVdy] = gradient(V,DX,DY);
+            [dUdx,dUdy] = gradient(UU,DX,DY);
+            [dVdx,dVdy] = gradient(VV,DX,DY);
             exx = dUdx/Dt;
             eyy = dVdy/Dt;
             exy = 0.5*(dVdx/Dt + dUdy/Dt);
@@ -151,8 +153,8 @@ if DisplayDerivative == 1
             DerivField = emin;
         
         case 'emax'
-            [dUdx,dUdy] = gradient(U,DX,DY);
-            [dVdx,dVdy] = gradient(V,DX,DY);
+            [dUdx,dUdy] = gradient(UU,DX,DY);
+            [dVdx,dVdy] = gradient(VV,DX,DY);
             exx = dUdx/Dt;
             eyy = dVdy/Dt;
             exy = 0.5*(dVdx/Dt + dUdy/Dt);
@@ -160,25 +162,18 @@ if DisplayDerivative == 1
             DerivField = emax;
             
         case 'gmax'
-            [dUdx,dUdy] = gradient(U,DX,DY);
-            [dVdx,dVdy] = gradient(V,DX,DY);
+            [dUdx,dUdy] = gradient(UU,DX,DY);
+            [dVdx,dVdy] = gradient(VV,DX,DY);
             exx = dUdx/Dt;
             eyy = dVdy/Dt;
             exy = 0.5*(dVdx/Dt + dUdy/Dt);
             emax = 0.5*(exx+eyy) + ((0.5*(exx-eyy)).^2 + exy.^2).^0.5;
             emin = 0.5*(exx+eyy) - ((0.5*(exx-eyy)).^2 + exy.^2).^0.5;
             gmax = emax - emin;
-            DerivField = gmax;
-            
-            
-            
-            
-            
+            DerivField = gmax;      
     end
     
-    InterpDeriv = Derivative{1,8}; % interpolate derivative yes or no           
-    if InterpDeriv == 1 
-        InterDerivMethod = Derivative{1,9} % how linear, spline...
+    InterDerivMethod = Derivative{1,9}; % how linear, spline...
         switch InterDerivMethod
             case 1
                 InterpMethod = 'linear';
@@ -187,21 +182,16 @@ if DisplayDerivative == 1
             case 3
                 InterpMethod = 'spline';
         end
-        
-        [HRX,HRY]=meshgrid(xmin:xmax,(ymin:ymax));
-        DerivField=interp2(X,Y,DerivField,HRX,HRY,InterDerivMethod);
-        
-        if MaskExist == 1 % if mask does exist
-            XM=RoiMask(:,1);
-            YM=RoiMask(:,2);
-            mask = poly2mask(XM-xmin,YM-ymin,size(DerivField,1),size(DerivField,2));
-            
-            % delete extrapolated outside the mask area
-            DerivField(mask == 0) = 0;
-            DerivField(isnan(DerivField) == 1) = 0;
-        end
-        
-    end
+     
+    [HRX,HRY]=meshgrid(xmin:xmax,(ymin:ymax));
+    NDerive=griddata(XX,YY,DerivField,HRX,HRY,InterDerivMethod);
+    
+    XM=RoiMask(:,1);
+    YM=RoiMask(:,2);
+    mask = poly2mask(XM - floor(min2(X(~isnan(X)))),YM - floor(min2(Y(~isnan(Y)))),size(NDerive,1),size(NDerive,2));
+    NDerive(mask == 0) = 0;
+    NDerive(isnan(NDerive) == 1) = 0;
+    DerivField = NDerive;
     
 	if RangeType == 1 % minmax            
         MaxRange=max(max(DerivField));
@@ -300,39 +290,8 @@ if DisplayVector == 1
 	XS=XS(1,:);
 	YS=(YS(:,1))';
     
-    
-    
-    
-    
-    
-%     
-%     % make copy of UV
-% 	U1 = U; V1=V;
-%                     
-% 	% where vector is not good (typevector not 1), set UV to NaN
-% 	U1(typevector ~= 1) = NaN;
-% 	V1(typevector ~= 1) = NaN;
-%                     
-% 	% make copy of UV
-% 	U3= U; V3 =V;
-%                     
-% 	% where data is not interpolated set to NaN. Keep only interpolated vectors
-% 	% in patch
-% 	U3(typevector == 1) = NaN;
-% 	V3(typevector == 1) = NaN;
-                    
-	
-            
-% 	TF = ~any(~isnan(US3(:)));
-%             
-% 	% plot interpolated vectors
-% 	if TF == 0 % U3 is not empty
-%         ncquiverref(XS,YS,US3,VS3,VectorUnit,VectorDisplayMode,'',[1 1 1],2); 
-%         hold on
-% 	end
-                    
 	% plot not interpolated vectors
-	ncquiverref(XS,YS,US,VS,VectorUnit,VectorDisplayMode,'true',[0.0 0.0 0.0],2);
+	ncquiverref(XS,YS,US,VS,VectorUnit,VectorDisplayMode,'true',VectorCol,2);
 	hold on
 end
 
