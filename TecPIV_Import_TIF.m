@@ -28,6 +28,7 @@ function [NumberImages,ImageWidth,ImageHeight] = TecPIV_Import_TIF(IPath,ThisDat
     obj = ProgressBar(NumberImages,'Title','Importing images');
     for i=1:NumberImages           
             Images{i}=strcat(cellstr(DataPathName), DataFileName(i));
+            %str = sprintf('%05d',i);
             name=strcat('IMG_',num2str(i),'.tif');
             %easycopySilent(char(Images{i}), fullfile(FullDataFolder,name));
             source=char(Images{i});

@@ -2639,7 +2639,8 @@ function hStartRectifyCalibCallback(hStartRectifyCalib,eventdata)
             Order =1;
         end
             
-        
+        myhandles.RectMethod = RectMethod;
+        myhandles.Order = Order;
         %find the dataset
         String=fullfile('Calibration');
         index = find(strcmp(myhandles.DataSets, String));
@@ -3196,7 +3197,10 @@ function hStartUndeformCallback (hStartUndeform,eventdata)
         PROJECTID=myhandles.ProjectID;
         RECTFN=myhandles.RectFn;
         
-        RectMethod=hpopupRectMethodSelector.Value;
+        %RectMethod=hpopupRectMethodSelector.Value;
+        RectMethod = myhandles.RectMethod;
+        %Order = myhandles.Order;
+        
         if RectMethod == 3
                 RECTFN2=myhandles.RectFn2;
         else
