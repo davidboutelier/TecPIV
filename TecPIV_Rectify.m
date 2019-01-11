@@ -117,6 +117,7 @@ n_pt_y=n_sq_y+1;
             A=[x(1,1) x(2,1);x(1,(n_sq_x+1)) x(2,(n_sq_x+1));x(1,(n_sq_x+1)*(n_sq_y+1)) x(2,(n_sq_x+1)*(n_sq_y+1)); x(1,(n_sq_x+1)*(n_sq_y+1)-n_sq_x) x(2,(n_sq_x+1)*(n_sq_y+1)-n_sq_x)];
             B=[tx(1,1) tx(2,1);tx(1,(n_sq_x+1)) tx(2,(n_sq_x+1));tx(1,(n_sq_x+1)*(n_sq_y+1)) tx(2,(n_sq_x+1)*(n_sq_y+1)); tx(1,(n_sq_x+1)*(n_sq_y+1)-n_sq_x) tx(2,(n_sq_x+1)*(n_sq_y+1)-n_sq_x)];          
             RectFn=cp2tform(A,B,'projective');
+        
         else RectMethod == 2
              RectFn=cp2tform(x',tx','polynomial',Order);
                    

@@ -105,6 +105,7 @@ function DisplayIMG(Ax,F, Datasets, Value,RawCpt,VectorField,Derivative)
             Y = DATA.Y;
             U = DATA.U;
             V = DATA.V;
+            D = DATA.D;
             clear DATA
             
             DATA = load(fullfile(PIVStagePath,ProjectName,'Datasets.mat'));
@@ -161,7 +162,7 @@ function DisplayIMG(Ax,F, Datasets, Value,RawCpt,VectorField,Derivative)
                     %colormap(gca,RGB);
              end 
              
-            TecPIV_Display_LagGrid(I,Ax,RawCpt,VectorField,Derivative,Dt,MaskExist,ROI,RoiMask,RGB,RangeType, X,Y,U,V,DX)
+            TecPIV_Display_LagGrid(I,Ax,RawCpt,VectorField,Derivative,Dt,MaskExist,ROI,RoiMask,RGB,RangeType, X,Y,U,V,DX, D)
             
     
     end

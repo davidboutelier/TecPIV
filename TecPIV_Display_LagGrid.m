@@ -1,4 +1,4 @@
-function TecPIV_Display_LagGrid(I,Ax,RawCpt,VectorField,Derivative,Dt,MaskExist,ROI,RoiMask,RGB,RangeType, X,Y,U,V,DX)
+function TecPIV_Display_LagGrid(I,Ax,RawCpt,VectorField,Derivative,Dt,MaskExist,ROI,RoiMask,RGB,RangeType, X,Y,U,V,DX,L)
 %UNTITLED Summary of this function goes here
 
 hwaitfig = figure('units','pixels','position',[500 500 300 50],'windowstyle','modal');
@@ -68,6 +68,25 @@ Neyy = griddata(XX,YY,eyy,NX,NY,'linear');
 Neyx = griddata(XX,YY,eyx,NX,NY,'linear');
 
 switch DerivativeName
+    case 'U'
+        Derive = UU;
+        NDerive = griddata(XX,YY,UU,NX,NY,'linear');
+    case 'V'
+        Derive = VV;
+        NDerive = griddata(XX,YY,VV,NX,NY,'linear');
+        
+    case 'M'
+        Derive = sqrt(VV.^2 + UU.^2);
+        NDerive = griddata(XX,YY,Derive,NX,NY,'linear');
+        
+    case 'theta'
+        Derive = atan2(VV,UU)*180/pi;
+        NDerive = griddata(XX,YY,Derive,NX,NY,'linear');
+        
+    case 'L'
+        Derive  = inpaint_nans(L,3);
+        NDerive = griddata(XX,YY,Derive,NX,NY,'linear');
+        
     case 'dU/dx'
         Derive = exx;
         GTitle = 'dU/dx';
@@ -139,11 +158,11 @@ end
 % delete extrapolated outside the mask area
 XM=RoiMask(:,1);
 YM=RoiMask(:,2);
-mask = poly2mask(XM-xmin,YM-ymin,size(NDerive,1),size(NDerive,2));
+mask = poly2mask(XM - floor(min2(X(~isnan(X)))),YM -floor(min2(Y(~isnan(Y)))),size(NDerive,1),size(NDerive,2));
 NDerive(mask == 0) = 0;
 NDerive(isnan(NDerive) == 1) = 0;
 
-DerivField = Derive;
+DerivField = NDerive;
 
 if RangeType == 1 % minmax            
         MaxRange=max(max(DerivField));
@@ -162,10 +181,7 @@ else % manual mode
         Range = [MinRange, MaxRange];
 end
 
-
-
-temp = VectorField{1,14};
-GridCol = temp{1,1};
+GridCol = char(VectorField{1,14});
 
 k=VectorField{1,2};
 
