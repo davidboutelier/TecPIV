@@ -3219,14 +3219,14 @@ function hStartUndeformCallback (hStartUndeform,eventdata)
             CROPRECT=0;
         end
         
-       obj = ProgressBar(NumberImages, ...
-           'IsParallel', true, ...
-           'WorkerDirectory', pwd, ...
-           'Title', 'Rectifying images' ...
-           );
-
-        % ALWAYS CALL THE SETUP() METHOD FIRST!!!
-        obj.setup([], [], []);
+%        obj = ProgressBar(NumberImages, ...
+%            'IsParallel', true, ...
+%            'WorkerDirectory', pwd, ...
+%            'Title', 'Rectifying images' ...
+%            );
+% 
+%         % ALWAYS CALL THE SETUP() METHOD FIRST!!!
+%         obj.setup([], [], []);
         
         parfor i=1:NumberImages 
             FramePath=fullfile(PathData,PROJECTID,DataFolder,['IMG_' num2str(i) '.tif']);
@@ -3244,8 +3244,11 @@ function hStartUndeformCallback (hStartUndeform,eventdata)
             else
                 I1 = imtransform(I,RECTFN,'bilinear','FillValues', Inf);
                 I2 = imtransform(I1,RECTFN2,'bilinear','FillValues', Inf);
+                
                 if CROPIMAGE == 1
-                    I1=imcrop(I2,CROPRECT); 
+                    I1=imcrop(I2,CROPRECT);
+                else
+                    I1 = I2;
                 end
                 if DoRotate == 1
                     I1 = imrotate(I1, Rotation, 'loose', 'bilinear');
@@ -3260,9 +3263,9 @@ function hStartUndeformCallback (hStartUndeform,eventdata)
             %go back to project folder
             cd(fullfile(PathData,PROJECTID));
             
-        updateParallel([], pwd);
+        %updateParallel([], pwd);
         end
-        obj.release();
+        %obj.release();
         
         clear I;
         clear I0;
