@@ -1,12 +1,7 @@
 function TecPIV_Display_LagGrid(I,Ax,RawCpt,VectorField,Derivative,Dt,MaskExist,ROI,RoiMask,RGB,RangeType, X,Y,U,V,DX,L)
 %UNTITLED Summary of this function goes here
 
-hwaitfig = figure('units','pixels','position',[500 500 300 50],'windowstyle','modal');
-hwaituicont = uicontrol('style','text',...
-    'string','Updating figure. Please wait...',...
-    'units','pixels',...
-    'parent', hwaitfig,...
-    'position',[0 0 300 50]);
+fprintf('Updating figure. Please wait...') % this is because the building of the figure may take a lot of time
 
 % select and clear the ax to make new figure
 axes(Ax);
@@ -183,29 +178,42 @@ end
 
 GridCol = char(VectorField{1,14});
 k=VectorField{1,2};
+k= k(1);
 
-
-SX = size(XX);
-SSX = SX(1);
-SSY = SX(2);
-
-rX = k * mod(SSX,k)
-rY = k * mod(SSY,k)
-
-if mod(rX,2) == 0
-    startx = rX /2;
+if k == 1
+    startx =1;
+    starty =1;
 else
-    startx = (rX -1) / 2
+    SX = size(XX);
+    SSX = SX(2);
+    SSY = SX(1);
+    
+    rX = mod(SSX-1,k);
+    rY = mod(SSY-1,k);
+    
+    if rX == 0
+        startx = 1;
+    else
+        if mod(rX,2) == 0
+            startx = 1 + rX/2;
+        else
+            startx = 1 + (rX - 1)/2;
+        end    
+    end
+
+    if rY == 0
+        starty = 1;
+    else
+        if mod(rY,2) == 0
+            starty = 1 + rY/2;
+        else
+            starty = 1 + (rY - 1)/2;
+        end   
+    end    
 end
 
-if mod(rY,2) == 0
-    starty = rY /2;
-else
-    starty = (rY -1) / 2
-end
-
-XX2=XX(startx:k:end,starty:k:end);
-YY2=YY(startx:k:end,starty:k:end);
+XX2=XX(starty:k:end,startx:k:end);
+YY2=YY(starty:k:end,startx:k:end);
 
 % new custom solution
 N = size(XX2,1);
@@ -227,6 +235,7 @@ caxis(Range);
 set(gca, 'TickDir', 'out')
 ylabel(iDeriv2,DerivativeName);
 hold on 
+
 
 for i=1:M-1
     for j=1:N
@@ -327,24 +336,6 @@ if strcmp(DoScale,'phys') == 1
     hold on
 end
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-close(hwaitfig)
+fprintf(' done.\n')
 end
 

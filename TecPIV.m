@@ -208,19 +208,6 @@ hexportFigure = figure(...
 
 end
 
-% %%
-% hSecondFigure = figure(...
-%     'name','TecPIV: settings', ...
-%     'Position',[0,0,0.5*screensize(3),0.66*screensize(4)], ...
-%     'Visible','off', ...
-%     'MenuBar','none', ...
-%     'Toolbar','none', ...
-%     'HandleVisibility','callback', ...
-%     'Resize','off',...
-%     'CloseRequestFcn', @CloseRequestSecFigure, ...
-%     'Color', get(groot,...
-%     'defaultuicontrolbackgroundcolor'));
-
 %% Create structure of handles
 myhandles = guihandles(hMainFigure);
 
@@ -243,7 +230,7 @@ else
 end
 
 %% Create version
-myhandles.Version='v.1801';
+myhandles.Version='v.1901';
 % date-version: 2.1.1 - 4/04/2016 --> v.1604
 % date-version: 2.1.2 - 12/12/2016 -->v.1612
 
@@ -252,8 +239,6 @@ DATO=date;
 logname=['matlab-log-',DATO];
 
 disp(['This MATLAB session will be logged in file tecpiv-log-',DATO])
-disp([' '])
-
 warning('off','MATLAB:hg:uicontrol:StringMustBeNonEmpty')
 
 ExistDiary=exist(logname,'file');
@@ -278,62 +263,59 @@ if s == 1 % matlabpool is not open
         poolobj.IdleTimeout = 600000;
     end
     
-%    parpool('IdleTimeout', 600000); 
-%    warning('off','MATLAB:datetime:InvalidSystemTimeZone')
-    
 end
 
 %% Save the structure in hMainFigure
 guidata(hMainFigure,myhandles); 
 
-%% Query the compute capabilities of GPU devices.
-fprintf('\n')
-fprintf('Determine if computation can be performed on GPU....................')
-
-f=fullfile(TecPivFolder ,'CUDA.mat');
-load(f,'No_CUDA_msg');
-
-if ismac
-    % Code to run on Mac plaform
-    fprintf(' No.\n')
-    fprintf('\n')
-    disp('CUDA is not yet made to work on macos.')
-elseif isunix
-    fprintf(' No.\n')
-    fprintf('\n')
-    disp('CUDA is not yet made to work on unix.')
-else
-    [status,cmdout] = system('nvcc');
-    tf = strcmp(No_CUDA_msg,cmdout);
-    if tf == 1 
-        fprintf(' No.\n')
-        fprintf('\n')
-        disp('CUDA is not installed on this machine. Either there is no suitable GPU for CUDA compute, or CUDA is not installed properly.')
-
-    else
-    
-        fprintf(' Yes.\n')
-        fprintf('\n')
-    
-        g = gpuDevice;
-        MaxComp=0;
-    
-    for ii = 1:gpuDeviceCount
-        g = gpuDevice(ii);
-        if g.ComputeCapability >= MaxComp
-            MaxComp=g.ComputeCapability;
-            Index=g.Index;
-        end
-        
-    end
-    
-    gpuDevice(Index);
-    fprintf('GPU Device %i has been selected\n', ...
-       g.Index)
-     
-    end
-    
-end
+% %% Query the compute capabilities of GPU devices.
+% fprintf('\n')
+% fprintf('Determine if computation can be performed on GPU....................')
+% 
+% f=fullfile(TecPivFolder ,'CUDA.mat');
+% load(f,'No_CUDA_msg');
+% 
+% if ismac
+%     % Code to run on Mac plaform
+%     fprintf(' No.\n')
+%     fprintf('\n')
+%     disp('CUDA is not yet made to work on macos.')
+% elseif isunix
+%     fprintf(' No.\n')
+%     fprintf('\n')
+%     disp('CUDA is not yet made to work on unix.')
+% else
+%     [status,cmdout] = system('nvcc');
+%     tf = strcmp(No_CUDA_msg,cmdout);
+%     if tf == 1 
+%         fprintf(' No.\n')
+%         fprintf('\n')
+%         disp('CUDA is not installed on this machine. Either there is no suitable GPU for CUDA compute, or CUDA is not installed properly.')
+% 
+%     else
+%     
+%         fprintf(' Yes.\n')
+%         fprintf('\n')
+%     
+%         g = gpuDevice;
+%         MaxComp=0;
+%     
+%     for ii = 1:gpuDeviceCount
+%         g = gpuDevice(ii);
+%         if g.ComputeCapability >= MaxComp
+%             MaxComp=g.ComputeCapability;
+%             Index=g.Index;
+%         end
+%         
+%     end
+%     
+%     gpuDevice(Index);
+%     fprintf('GPU Device %i has been selected\n', ...
+%        g.Index)
+%      
+%     end
+%     
+% end
 
 %% //UI settings
 % UI main figure
@@ -2405,56 +2387,56 @@ function hOpenMenuitemCallback(hObject,eventdata)
                 end   
     end
         
-   guidata(hMainFigure,myhandles);
-   
-   if ismac
-    % Code to run on Mac plaform
-    fprintf('\n')
-        disp('CUDA is not installed on this machine.')
-    elseif isunix
-    % Code to run on Linux plaform
-    fprintf('\n')
-    disp('CUDA is not installed on this machine.')
-    elseif ispc
-    % Code to run on Windows platform
-    % need to reload the gpu capability
-    f=fullfile(TecPivFolder ,'CUDA.mat');
-    No_CUDA_msg=load(f,'No_CUDA_msg');
-    [status,cmdout] = system('nvcc');
-
-    tf = strcmp(No_CUDA_msg,cmdout)
-    MaxComp=0;
-    
-    if tf == 1
-        fprintf(' No.\n')
-        fprintf('\n')
-        disp('CUDA is not installed on this machine. Either there is no suitable GPU for CUDA compute, or CUDA is not installed properly.')
-
-    else
-    
-        fprintf(' Yes.\n')
-        fprintf('\n')
-        g = gpuDevice;
-    
-        for ii = 1:gpuDeviceCount
-            g = gpuDevice(ii);
-            if g.ComputeCapability >= MaxComp
-                MaxComp=g.ComputeCapability;
-                Index=g.Index;
-            end
-        
-        end
-    
-        gpuDevice(Index);
-        fprintf('GPU Device %i has been selected\n', ...
-        g.Index)
-     
-    end
-    
-    
-    else
-    disp('Platform not supported')
-   end
+%    guidata(hMainFigure,myhandles);
+%    
+%    if ismac
+%     % Code to run on Mac plaform
+%     fprintf('\n')
+%         disp('CUDA is not installed on this machine.')
+%     elseif isunix
+%     % Code to run on Linux plaform
+%     fprintf('\n')
+%     disp('CUDA is not installed on this machine.')
+%     elseif ispc
+%     % Code to run on Windows platform
+%     % need to reload the gpu capability
+%     f=fullfile(TecPivFolder ,'CUDA.mat');
+%     No_CUDA_msg=load(f,'No_CUDA_msg');
+%     [status,cmdout] = system('nvcc');
+% 
+%     tf = strcmp(No_CUDA_msg,cmdout)
+%     MaxComp=0;
+%     
+%     if tf == 1
+%         fprintf(' No.\n')
+%         fprintf('\n')
+%         disp('CUDA is not installed on this machine. Either there is no suitable GPU for CUDA compute, or CUDA is not installed properly.')
+% 
+%     else
+%     
+%         fprintf(' Yes.\n')
+%         fprintf('\n')
+%         g = gpuDevice;
+%     
+%         for ii = 1:gpuDeviceCount
+%             g = gpuDevice(ii);
+%             if g.ComputeCapability >= MaxComp
+%                 MaxComp=g.ComputeCapability;
+%                 Index=g.Index;
+%             end
+%         
+%         end
+%     
+%         gpuDevice(Index);
+%         fprintf('GPU Device %i has been selected\n', ...
+%         g.Index)
+%      
+%     end
+%     
+%     
+%     else
+%     disp('Platform not supported')
+%    end
         
         guidata(hMainFigure,myhandles);
 end
@@ -3262,10 +3244,10 @@ function hStartUndeformCallback (hStartUndeform,eventdata)
             name=strcat('IMG_',num2str(i),'.tif');
             imwrite(I1,name,'tiff');
             
-            a=dir([NewDataFolder '/*.tif']);
-            p = int(floor(size(a,1) / NumberImages));
-            mes = sprintf('%3.0d %% ', p);
-            disp(mes)
+%             a=dir([NewDataFolder '/*.tif']);
+%             p = int(floor(size(a,1) / NumberImages));
+%             mes = sprintf('%3.0d %% ', p);
+%             disp(mes)
 
             %go back to project folder
             cd(fullfile(PathData,PROJECTID));
