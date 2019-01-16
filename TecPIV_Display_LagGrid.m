@@ -182,12 +182,30 @@ else % manual mode
 end
 
 GridCol = char(VectorField{1,14});
-
 k=VectorField{1,2};
 
-k=VectorField{1,2};
-XX2=XX(1:k:end,1:k:end);
-YY2=YY(1:k:end,1:k:end);
+
+SX = size(XX);
+SSX = SX(1);
+SSY = SX(2);
+
+rX = k * mod(SSX,k)
+rY = k * mod(SSY,k)
+
+if mod(rX,2) == 0
+    startx = rX /2;
+else
+    startx = (rX -1) / 2
+end
+
+if mod(rY,2) == 0
+    starty = rY /2;
+else
+    starty = (rY -1) / 2
+end
+
+XX2=XX(startx:k:end,starty:k:end);
+YY2=YY(startx:k:end,starty:k:end);
 
 % new custom solution
 N = size(XX2,1);

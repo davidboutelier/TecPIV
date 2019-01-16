@@ -3228,6 +3228,8 @@ function hStartUndeformCallback (hStartUndeform,eventdata)
 %         % ALWAYS CALL THE SETUP() METHOD FIRST!!!
 %         obj.setup([], [], []);
         
+        disp('Rectifying images ...')
+        
         parfor i=1:NumberImages 
             FramePath=fullfile(PathData,PROJECTID,DataFolder,['IMG_' num2str(i) '.tif']);
             I=imread(FramePath);
@@ -3259,6 +3261,11 @@ function hStartUndeformCallback (hStartUndeform,eventdata)
             cd(NewDataFolder);
             name=strcat('IMG_',num2str(i),'.tif');
             imwrite(I1,name,'tiff');
+            
+            a=dir([NewDataFolder '/*.tif']);
+            p = int(floor(size(a,1) / NumberImages));
+            mes = sprintf('%3.0d %% ', p);
+            disp(mes)
 
             %go back to project folder
             cd(fullfile(PathData,PROJECTID));
