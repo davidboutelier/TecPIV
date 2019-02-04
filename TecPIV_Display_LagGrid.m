@@ -2,7 +2,7 @@ function TecPIV_Display_LagGrid(I,Ax,RawCpt,VectorField,Derivative,Dt,MaskExist,
 %UNTITLED Summary of this function goes here
 
 fprintf('Updating figure. Please wait...') % this is because the building of the figure may take a lot of time
-
+tstart = tic;
 % select and clear the ax to make new figure
 axes(Ax);
 cla(Ax); % clear the axes
@@ -31,8 +31,6 @@ DeriveCpt=Derivative{1,4}; % name of the colormap
 % patch the holes in grids
 XX=inpaint_nans(X,3);
 YY=inpaint_nans(Y,3);
-UU=inpaint_nans(U,3);
-VV=inpaint_nans(V,3);
 
 % get area of deformed grid
 xmin = floor(min2(XX));
@@ -51,30 +49,27 @@ Ny=ymin:1:ymax;
 % create new x and y grids
 [NX,NY]=meshgrid(Nx,Ny);
 
-% calculate gradient of lagrangian displacements
-% points are initially every 64 pixels (PIV resolution for each experiment)
-[exx,exy] = gradient(UU,DX,DY);
-[eyx,eyy] = gradient(VV,DX,DY);
-
-% interpolate the gradients to get finer resolution
-Nexx = griddata(XX,YY,exx,NX,NY,'linear');
-Nexy = griddata(XX,YY,exy,NX,NY,'linear');
-Neyy = griddata(XX,YY,eyy,NX,NY,'linear');
-Neyx = griddata(XX,YY,eyx,NX,NY,'linear');
+tstartscalar = tic;
 
 switch DerivativeName
     case 'U'
+        UU=inpaint_nans(U,3);
         Derive = UU;
         NDerive = griddata(XX,YY,UU,NX,NY,'linear');
     case 'V'
+        VV=inpaint_nans(V,3);
         Derive = VV;
         NDerive = griddata(XX,YY,VV,NX,NY,'linear');
         
     case 'M'
+        UU=inpaint_nans(U,3);
+        VV=inpaint_nans(V,3);
         Derive = sqrt(VV.^2 + UU.^2);
         NDerive = griddata(XX,YY,Derive,NX,NY,'linear');
         
     case 'theta'
+        UU=inpaint_nans(U,3);
+        VV=inpaint_nans(V,3);
         Derive = atan2(VV,UU)*180/pi;
         NDerive = griddata(XX,YY,Derive,NX,NY,'linear');
         
@@ -83,47 +78,104 @@ switch DerivativeName
         NDerive = griddata(XX,YY,Derive,NX,NY,'linear');
         
     case 'dU/dx'
+        UU=inpaint_nans(U,3);
+        [exx,~] = gradient(UU,DX,DY);
+        Nexx = griddata(XX,YY,exx,NX,NY,'linear');
         Derive = exx;
         GTitle = 'dU/dx';
         NDerive = Nexx;
         
     case 'dU/dy'
+        UU=inpaint_nans(U,3);
+        [~,exy] = gradient(UU,DX,DY);
+        Nexy = griddata(XX,YY,exy,NX,NY,'linear');
         Derive = exy;
         GTitle = 'dU/dy';
         NDerive = Nexy;
         
     case 'dV/dx'
+        VV=inpaint_nans(V,3);
+        [eyx,~] = gradient(VV,DX,DY);
+        Neyx = griddata(XX,YY,eyx,NX,NY,'linear');
         Derive = eyx;
         GTitle = 'dV/dx';
         NDerive = Neyx;
         
     case 'dV/dy'
+        VV=inpaint_nans(V,3);
+        [~,eyy] = gradient(VV,DX,DY);
+        Neyy = griddata(XX,YY,eyy,NX,NY,'linear');
         Derive = eyy;
         GTitle = 'dV/dy';
         NDerive = Neyy;
         
     case 'Exy'
+        UU=inpaint_nans(U,3);
+        VV=inpaint_nans(V,3);
+        [exx,exy] = gradient(UU,DX,DY);
+        [eyx,eyy] = gradient(VV,DX,DY);
+        Nexx = griddata(XX,YY,exx,NX,NY,'linear');
+        Nexy = griddata(XX,YY,exy,NX,NY,'linear');
+        Neyy = griddata(XX,YY,eyy,NX,NY,'linear');
+        Neyx = griddata(XX,YY,eyx,NX,NY,'linear');
+        
         Derive = 0.5*(exy+eyx +(exx.*exy+eyx.*eyy));
         GTitle = 'Exy = 0.5*(exy+eyx +(exx.*exy+eyx.*eyy))';
         NDerive = 0.5*(Nexy+Neyx+(Nexx.*Nexy+Neyx.*Neyy));
         
     case 'Exx'
+        UU=inpaint_nans(U,3);
+        VV=inpaint_nans(V,3);
+        [exx,exy] = gradient(UU,DX,DY);
+        [eyx,eyy] = gradient(VV,DX,DY);
+        Nexx = griddata(XX,YY,exx,NX,NY,'linear');
+        Nexy = griddata(XX,YY,exy,NX,NY,'linear');
+        Neyy = griddata(XX,YY,eyy,NX,NY,'linear');
+        Neyx = griddata(XX,YY,eyx,NX,NY,'linear');
+        
         Derive = 0.5*(exx+exx +(exx.*exx+eyx.*eyx));
         GTitle = 'Exx = 0.5*(exx+exx +(exx.*exx+eyx.*eyx));';
         NDerive = 0.5*(Nexx+Nexx +(Nexx.*Nexx+Neyx.*Neyx));
     
     case 'Eyy'
+        UU=inpaint_nans(U,3);
+        VV=inpaint_nans(V,3);
+        [exx,exy] = gradient(UU,DX,DY);
+        [eyx,eyy] = gradient(VV,DX,DY);
+        Nexx = griddata(XX,YY,exx,NX,NY,'linear');
+        Nexy = griddata(XX,YY,exy,NX,NY,'linear');
+        Neyy = griddata(XX,YY,eyy,NX,NY,'linear');
+        Neyx = griddata(XX,YY,eyx,NX,NY,'linear');
+        
         Derive = 0.5*(eyy+eyy +(exy.*exy+eyy.*eyy));
         GTitle = 'Eyy = 0.5*(eyy+eyy +(exy.*exy+eyy.*eyy))';
         NDerive = 0.5*(Neyy+Neyy +(Nexy.*Nexy+Neyy.*Neyy));
         
     case 'Eyx'
+        UU=inpaint_nans(U,3);
+        VV=inpaint_nans(V,3);
+        [exx,exy] = gradient(UU,DX,DY);
+        [eyx,eyy] = gradient(VV,DX,DY);
+        Nexx = griddata(XX,YY,exx,NX,NY,'linear');
+        Nexy = griddata(XX,YY,exy,NX,NY,'linear');
+        Neyy = griddata(XX,YY,eyy,NX,NY,'linear');
+        Neyx = griddata(XX,YY,eyx,NX,NY,'linear');
+        
         Derive = 0.5*(eyx+exy +(eyy.*eyx+exy.*exx));
         GTitle = 'Eyx = 0.5*(eyx+exy +(eyy.*eyx+exy.*exx))';
         NDerive = 0.5*(Neyx+Nexy +(Neyy.*Neyx+Nexy.*Nexx));
     
     case 'IE'
         GTitle = 'IE';
+        
+        UU=inpaint_nans(U,3);
+        VV=inpaint_nans(V,3);
+        [exx,exy] = gradient(UU,DX,DY);
+        [eyx,eyy] = gradient(VV,DX,DY);
+        Nexx = griddata(XX,YY,exx,NX,NY,'linear');
+        Nexy = griddata(XX,YY,exy,NX,NY,'linear');
+        Neyy = griddata(XX,YY,eyy,NX,NY,'linear');
+        Neyx = griddata(XX,YY,eyx,NX,NY,'linear');
         
         Exx = 0.5*(exx+exx +(exx.*exx+eyx.*eyx));
         Eyy = 0.5*(eyy+eyy +(exy.*exy+eyy.*eyy));
@@ -135,6 +187,15 @@ switch DerivativeName
         
     case 'IIE'
         GTitle = 'IIE';
+        
+        UU=inpaint_nans(U,3);
+        VV=inpaint_nans(V,3);
+        [exx,exy] = gradient(UU,DX,DY);
+        [eyx,eyy] = gradient(VV,DX,DY);
+        Nexx = griddata(XX,YY,exx,NX,NY,'linear');
+        Nexy = griddata(XX,YY,exy,NX,NY,'linear');
+        Neyy = griddata(XX,YY,eyy,NX,NY,'linear');
+        Neyx = griddata(XX,YY,eyx,NX,NY,'linear');
         
         Exx = 0.5*(exx+exx +(exx.*exx+eyx.*eyx));
         Eyy = 0.5*(eyy+eyy +(exy.*exy+eyy.*eyy));
@@ -149,13 +210,16 @@ switch DerivativeName
         NDerive = NExx.*NEyy - NExy.*NEyx;
          
 end
+tendscalar = toc(tstartscalar);
 
+tstartmask = tic;
 % delete extrapolated outside the mask area
 XM=RoiMask(:,1);
 YM=RoiMask(:,2);
 mask = poly2mask(XM - floor(min2(X(~isnan(X)))),YM -floor(min2(Y(~isnan(Y)))),size(NDerive,1),size(NDerive,2));
 NDerive(mask == 0) = 0;
 NDerive(isnan(NDerive) == 1) = 0;
+tendsmask = toc(tstartmask);
 
 DerivField = NDerive;
 
@@ -225,7 +289,10 @@ Ider = mat2im(DerivField,RGB,Range);
 DerivROI=imref2d(size(DerivField),xwidth,ywidth);
     
 RA = imref2d(size(I));
+
+tstartfuse = tic;
 [D,~] = imfuse(I,RA,Ider,DerivROI,'method','blend');
+tendfuse = toc(tstartfuse);
     
 subimage(D)
 iDeriv2=colorbar('location','westoutside');
@@ -237,26 +304,38 @@ ylabel(iDeriv2,DerivativeName);
 hold on 
 
 
-for i=1:M-1
-    for j=1:N
-        VX = [XX2(j,i), XX2(j,i+1)];
-        VY = [YY2(j,i), YY2(j,i+1)];
-        plot(VX,VY,'-','color',GridCol)
-        hold on
-    end
+for i = 1:N
+    line(XX2(i,1:end),YY2(i,1:end),'color',GridCol);
+    hold on
 end
 
-% then draw vertical lines
-for i=1:M
-    for j=1:N-1
-        VX = [XX2(j,i), XX2(j+1,i)];
-        VY = [YY2(j,i), YY2(j+1,i)];
-        plot(VX,VY,'-','color',GridCol)
-        hold on
-    end
+for j = 1:M
+    line(XX2(1:end,j),YY2(1:end,j),'color',GridCol);
 end
+
+
+% for i=1:M-1
+%     for j=1:N
+%         VX = [XX2(j,i), XX2(j,i+1)];
+%         VY = [YY2(j,i), YY2(j,i+1)];
+%         plot(VX,VY,'-','color',GridCol)
+%         hold on
+%     end
+% end
+% 
+% % then draw vertical lines
+% for i=1:M
+%     for j=1:N-1
+%         VX = [XX2(j,i), XX2(j+1,i)];
+%         VY = [YY2(j,i), YY2(j+1,i)];
+%         plot(VX,VY,'-','color',GridCol)
+%         hold on
+%     end
+% end
+
 daspect([1 1 1])
 
+tstartdrawmask = tic;
 % check if we plot the ROI and the mask
 if MaskExist == 1
     
@@ -276,7 +355,10 @@ if MaskExist == 1
     end
 end
 
+tenddrawmask = toc(tstartdrawmask);
+
 %% If image is scaled. Add a scalebar
+tstartdrawscale = tic;
 if strcmp(DoScale,'phys') == 1
     
     % Get the current axis limits
@@ -335,7 +417,16 @@ if strcmp(DoScale,'phys') == 1
     uistack(ScaleBar,'top')
     hold on
 end
+tendscale = toc(tstartdrawscale);
 
+tend = toc(tstart);
 fprintf(' done.\n')
+fprintf('- calculating the scalar field in %f s\n',tendscalar)
+fprintf('- mask filter scalar plot in %f s\n', tendsmask)
+fprintf('- bitmaps fused in %f s\n', tendfuse)
+fprintf('- drawing ROI and mask in %f s\n', tenddrawmask)
+fprintf('- drawing scale bar in %f s\n', tendscale)
+fprintf('=> figure created in %f s\n', tend)
+
 end
 

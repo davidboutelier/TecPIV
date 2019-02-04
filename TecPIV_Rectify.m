@@ -123,8 +123,6 @@ n_pt_y=n_sq_y+1;
                    
         end
             
-       
-        
         message=sprintf('Rectifying calibration image...'); 
         disp(message)
         ImB = imtransform(I,RectFn,'bilinear','FillValues', Inf);
@@ -154,6 +152,8 @@ n_pt_y=n_sq_y+1;
         
         name=fullfile(TecPIVFolder,ProjectName,DataFolder,'Rectified',['IMG_' num2str(Frame) '.tif']);
         imwrite(ImB,name,'tiff','Compression','none');
+        
+       
        
     end
 end

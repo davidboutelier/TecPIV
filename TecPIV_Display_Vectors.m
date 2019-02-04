@@ -89,13 +89,13 @@ if DisplayDerivative == 1
 
         case 'exy'
             [~,dUdy] = gradient(UU,DY);
-            [dVdx,~] = gradient(VU,DX);
+            [dVdx,~] = gradient(VV,DX);
             DerivField = 0.5*(dVdx/Dt + dUdy/Dt);
 
         case 'eyx'
-            [~,dUdy] = gradient(UU);
-            [dVdx,~] = gradient(VV);
-            DerivField = 0.5*(dVdx/(DX*Dt) + dUdy/(DY*Dt));
+            [~,dUdy] = gradient(UU,DY);
+            [dVdx,~] = gradient(VV,DX);
+            DerivField = 0.5*(dVdx/Dt + dUdy/Dt);
 
         case 'eyy'
             [~,dVdy] = gradient(VV);
@@ -202,7 +202,7 @@ if DisplayDerivative == 1
         AbsMaxRange=abs(max(max(DerivField)));
         AbsMinRange=abs(min(min(DerivField)));
         NewMax=max([AbsMaxRange, AbsMinRange]);
-        Range=[-NewMax,NewMax]
+        Range=[-NewMax,NewMax];
 
 	else % manual mode
         MinRange =Derivative{1,5};

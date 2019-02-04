@@ -191,12 +191,10 @@ hDisplayFigureGRID = figure(...
     'Color', get(groot,...
     'defaultuicontrolbackgroundcolor'));
 
-
-
 % create export figure
 hexportFigure = figure(...
     'name','export', ...
-    'Position',[0,0,340,650], ...
+    'Position',[0,0,340,200], ...
     'Visible','off', ...
     'MenuBar','none', ...
     'Toolbar','none', ...
@@ -2101,6 +2099,51 @@ end
 
 % UI export figure
 for folding = true
+   P =  hexportFigure.Position; 
+   hApplyExport = uicontrol(...
+    'Callback', @hStartExportAllCallback,...
+    'Style','pushbutton',...
+    'String','Start',...
+    'Parent', hexportFigure, ...
+    'FontSize',myhandles.MyFontSize + 2,...
+    'FontWeight', 'Bold', ...
+    'HorizontalAlignment','left',...
+    'Units', 'pixels', ...
+    'Position',[200 10 60 30]);
+
+    T = hApplyExport.Extent;
+    hApplyExport.Position(1) = P(3) - T(3) -35;
+    
+    hDoPNG = uicontrol(...
+        'Style', 'checkbox',...
+        'Parent', hexportFigure, ...
+        'FontSize',myhandles.MyFontSize,...
+        'String','Export as png files',...
+        'HorizontalAlignment','left',...
+        'Units', 'pixels', ...
+        'Position',[10 50 200 30]);
+    
+     hDoPDF = uicontrol(...
+        'Style', 'checkbox',...
+        'Parent', hexportFigure, ...
+        'FontSize',myhandles.MyFontSize,...
+        'String','Export as pdf files',...
+        'HorizontalAlignment','left',...
+        'Units', 'pixels', ...
+        'Position',[10 80 200 30]);
+    
+    hDoAVI = uicontrol(...
+        'Style', 'checkbox',...
+        'Parent', hexportFigure, ...
+        'FontSize',myhandles.MyFontSize,...
+        'String','Export as avi file',...
+        'HorizontalAlignment','left',...
+        'Units', 'pixels', ...
+        'Position',[10 110 200 30]);
+
+     
+    
+    
 end
 
 % UI LagTracers figure
@@ -2586,6 +2629,12 @@ function hControlPointsExtractionStartCallback(hStartControlPointsExtraction,eve
         
         set(hMainFigure, 'pointer','arrow')
         guidata(hMainFigure,myhandles);
+        
+        hf = figure();
+        hf.Position = hMainFigure.Position;
+        copyobj(hPlotAxes,hf);
+        print(hf,'-painters','-dpdf', '-fillpage','CP.pdf')  
+        close(hf)
     
 end
 function hStartRectifyCalibCallback(hStartRectifyCalib,eventdata)
@@ -2693,12 +2742,20 @@ function hStartRectifyCalibCallback(hStartRectifyCalib,eventdata)
         myhandles.CropImage=CropImage;
         myhandles.CropRect=rect;
         
+        hf = figure();
+        hf.Position = hMainFigure.Position;
+        copyobj(hPlotAxes,hf);
+        print(hf,'-painters','-dpdf', '-fillpage','CP-1.pdf')  
+        close(hf)
+        
         if RectMethod == 3
             STEP=2/2;
             
             % now we do second step => polynomial
             [RectFn2] = TecPIV_Rectify_second_step(myhandles.DataSets,ThisDataSetNumber,1,2,Order,ImScale);
             myhandles.RectFn2=RectFn2;
+            
+            
 
             % Display the first image
             TecPIV_Display_2(hPlotAxes,1,myhandles.DataSets,ThisDataSetNumber,myhandles.RawCpt,myhandles.VectorField,myhandles.Derivative);
@@ -2731,9 +2788,17 @@ function hStartRectifyCalibCallback(hStartRectifyCalib,eventdata)
             myhandles.CropImage=CropImage;
             myhandles.CropRect=rect;
             
+            hf = figure();
+            hf.Position = hMainFigure.Position;
+            copyobj(hPlotAxes,hf);
+            print(hf,'-painters','-dpdf', '-fillpage','CP-2.pdf')  
+            close(hf)
+            
             
         else
         end
+        
+        
         
         SizeI0=size(I0);
         ImageHeight=SizeI0(1,1);
@@ -3775,18 +3840,16 @@ function hStartCorrelationCallback(hStartPIV,eventdata)
         guidata(hMainFigure,myhandles);
 end
 function hExportAllFrameMenuitemCallback(hExportAllFrameMenuitem,eventdata)
-        % make second figure visible
-        hSecondFigure.Visible = 'on';
-        hpanelExportAllSettings.Visible='on';
-        guidata(hMainFigure,myhandles);
+    hexportFigure.Visible = 'on';
+	guidata(hMainFigure,myhandles);
 end
-function hStartExportAll(hStartExportAllButton,eventdata)
+function hStartExportAllCallback(hStartExportAllButton,eventdata)
         % start when export button is pressed
         
         % get choices
-        DoPDF=hExportAllPDFRadioButton.Value;
-        DoPNG=hExportAllPNGRadioButton.Value;
-        DoAVI=hExportAllAVIRadioButton.Value;
+        DoPDF=hDoPDF.Value;
+        DoPNG=hDoPNG.Value;
+        DoAVI=hDoAVI.Value;
         
         % get dataset
         SourceNum=hpopupSourceSelector.Value;
@@ -3794,7 +3857,7 @@ function hStartExportAll(hStartExportAllButton,eventdata)
 
         ThisDataSetNumber=hpopupSourceSelector.Value; % get  the selected dataset
         CurrentFrame=str2num(hImgNumber.String); % get the selected frame
-        DatasetFolder = myhandles.DataSets{ThisDataSetNumber,1};
+        DatasetFolder = myhandles.DataSets{ThisDataSetNumber,1}
         PathData = myhandles.DataSets{ThisDataSetNumber,2};
         ProjectID = myhandles.DataSets{ThisDataSetNumber,3};
         NumberImages = myhandles.DataSets{ThisDataSetNumber,4};
@@ -3818,15 +3881,26 @@ function hStartExportAll(hStartExportAllButton,eventdata)
              open(writerObj);
          end
         
+         % check the type of dataset to export
+         TypesDataset = {'Raw', 'Raw/Vectors', 'Raw/Rectified', 'Raw/Rectified/Vectors'};
+         A = strcmp(DatasetFolder, TypesDataset);
+         idx = find(A == 1);
+         
+         
+         
+         
         % check if vector dataset
-        k=strfind(DatasetFolder,'Vector');
+        k=strfind(DatasetFolder,'Vectors');
+        
+        
+        
         
         if isempty(k) == 1 % Dataset is not vector
             
-            % Display progress
-            progressStepSize = 1;
-            ppm = ParforProgMon('Exporting frames: ', NumberImages-1, progressStepSize, 400, 65);
-                
+%             % Display progress
+%             progressStepSize = 1;
+%             ppm = ParforProgMon('Exporting frames: ', NumberImages-1, progressStepSize, 400, 65);
+%                 
             for i=1:NumberImages-1
                 Frame=StartNumber+(i)*ImageInc;
                 CurrentTime = Frame*TimeInc;
@@ -3837,8 +3911,23 @@ function hStartExportAll(hStartExportAllButton,eventdata)
                 h = figure();
                 newaxes = axes('DataAspectRatio',[1 1 1]);
                 
-                TecPIV_Display(myhandles.TecPivFolder,I0,newaxes,myhandles.RawCpt,myhandles.VectorField,myhandles.Derivative);
+                % Display image
+                TecPIV_Display_2(newaxes,Frame,myhandles.DataSets,ThisDataSetNumber,myhandles.RawCpt,myhandles.VectorField,myhandles.Derivative);
                 set(h,'Visible', 'off'); % don't show image when exporting to accelerate
+                
+                Colormap = myhandles.Derivative{1,4};
+                ListMATLABCPT={'parula','jet','hsv','hot','cool','spring','summer',...
+                'autumn','winter','gray','bone','copper','pink','lines',...
+                'colorcube','prism','flag','white'};
+                Lia = ismember(Colormap,ListMATLABCPT); % check if colormap is in the list of MATLAB colormaps
+                
+                if Lia == 1 % it is a MATLAB colormap
+                    RGB=Colormap;
+                    colormap(newaxes,RGB);
+                else % it is a cutom colormap loaded from the folder
+                    load(fullfile(myhandles.TecPivFolder,'toolbox','colormaps',Colormap));
+                    colormap(newaxes,RGB);
+                end 
         
                 % Set up the paper size / position
                 set(h, 'PaperUnits', 'centimeters');
@@ -3848,7 +3937,9 @@ function hStartExportAll(hStartExportAllButton,eventdata)
                 
                 switch SourceName
                     case 'Raw'
-                        rootfilename=strcat('Raw-IMG',num2str(Frame));  
+                        rootfilename=strcat('Raw-IMG',num2str(Frame));
+                    case 'Raw\Vectors'
+                        rootfilename=strcat('Raw-Vectors-IMG',num2str(Frame));
                     case 'Calibration'
                         rootfilename=strcat('Calibration-IMG',num2str(Frame)); 
                     case 'Calibration\Rectified'
@@ -3881,10 +3972,10 @@ function hStartExportAll(hStartExportAllButton,eventdata)
                 end
                 close(h)
                 
-                % Display progress
-                if mod(i,progressStepSize)==0
-                     ppm.increment();
-                end 
+%                 % Display progress
+%                 if mod(i,progressStepSize)==0
+%                      ppm.increment();
+%                 end 
 
             end
         else %dataset is vector
@@ -3894,9 +3985,9 @@ function hStartExportAll(hStartExportAllButton,eventdata)
             
             if isempty(k) == 1 % Dataset includes Vector but not Rectified
                 ImageFolder=fullfile('Raw');
-                % Display progress
-                progressStepSize = 1;
-                ppm = ParforProgMon('Exporting frames: ', NumberImages-1, progressStepSize, 400, 65);
+%                 % Display progress
+%                 progressStepSize = 1;
+%                 ppm = ParforProgMon('Exporting frames: ', NumberImages-1, progressStepSize, 400, 65);
                 for i=1:NumberImages-1
                     Frame=StartNumber+(i-1)*ImageInc;
                     CurrentTime = Frame*TimeInc;
@@ -3959,10 +4050,10 @@ function hStartExportAll(hStartExportAllButton,eventdata)
                 end
                 close(h)
                 
-                % Display progress
-                if mod(i,progressStepSize)==0
-                     ppm.increment();
-                end 
+%                 % Display progress
+%                 if mod(i,progressStepSize)==0
+%                      ppm.increment();
+%                 end 
 
                 end
                 
@@ -3973,9 +4064,9 @@ function hStartExportAll(hStartExportAllButton,eventdata)
                 % dataset includes vector and Rectified
                 ImageFolder=fullfile('Raw','Rectified');
                 
-                % Display progress
-                progressStepSize = 1;
-                ppm = ParforProgMon('Exporting frames: ', NumberImages-1, progressStepSize, 400, 65);
+%                 % Display progress
+%                 progressStepSize = 1;
+%                 ppm = ParforProgMon('Exporting frames: ', NumberImages-1, progressStepSize, 400, 65);
                 
                 for i=1:NumberImages-1
                     Frame=StartNumber+(i-1)*ImageInc;
@@ -4037,10 +4128,10 @@ function hStartExportAll(hStartExportAllButton,eventdata)
                 end
                 close(h)
                 
-                % Display progress
-                if mod(i,progressStepSize)==0
-                     ppm.increment();
-                end 
+%                 % Display progress
+%                 if mod(i,progressStepSize)==0
+%                      ppm.increment();
+%                 end 
 
                 end
                 
@@ -4050,9 +4141,9 @@ function hStartExportAll(hStartExportAllButton,eventdata)
             end    
         end
             
-           % make second figure visible
-           hpanelExportAllSettings.Visible='off'; 
-        hSecondFigure.Visible = 'off';
+%            % make second figure visible
+%            hpanelExportAllSettings.Visible='off'; 
+%         hSecondFigure.Visible = 'off';
         guidata(hMainFigure,myhandles);
 end
 function hSourceSelectorCallback(hpopupSourceSelector,eventdata)
@@ -4061,7 +4152,18 @@ function hSourceSelectorCallback(hpopupSourceSelector,eventdata)
         % get the selected value & name
         SourceNum=hpopupSourceSelector.Value;
         SourceName=char(hpopupSourceSelector.String(SourceNum));
+        DataType = myhandles.DataSets{SourceNum,15};
         
+        switch DataType  
+                
+            case 'vector'
+               myhandles.Derivative{1,2}= 'u'; 
+                
+            case 'Lagrangian'
+                myhandles.Derivative{1,2}= 'U'; 
+ 
+        end
+               
         ThisDataSetNumber=SourceNum; % the selected dataset
         CurrentFrame=str2num(hImgNumber.String); % the selected frame
         
@@ -4081,6 +4183,7 @@ function hSourceSelectorCallback(hpopupSourceSelector,eventdata)
         %TecPIV_Display(myhandles.TecPivFolder,I0,hPlotAxes,myhandles.RawCpt,myhandles.VectorField,myhandles.Derivative);
         
         % Display the first image
+        myhandles.Derivative
         TecPIV_Display_2(hPlotAxes,StartImage,myhandles.DataSets,ThisDataSetNumber,myhandles.RawCpt,myhandles.VectorField,myhandles.Derivative);
         
         
