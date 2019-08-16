@@ -79,7 +79,8 @@ switch DerivativeName
         
     case 'dU/dx'
         UU=inpaint_nans(U,3);
-        [exx,~] = gradient(UU,DX,DY);
+        DX
+        [exx,~] = gradient(UU,DX);
         Nexx = griddata(XX,YY,exx,NX,NY,'linear');
         Derive = exx;
         GTitle = 'dU/dx';

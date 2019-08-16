@@ -1,4 +1,4 @@
-function DisplayIMG(Ax,F, Datasets, Value,RawCpt,VectorField,Derivative)
+function TecPIV_Display_2(Ax,F, Datasets, Value,RawCpt,VectorField,Derivative)
 %This function makes the figures. The image is not passed on to the function, only the dataset and frame number 
 % F: the frame number to be displayed
 % Datasets: the cell array with all the ddatasets in the current project
@@ -122,13 +122,13 @@ function DisplayIMG(Ax,F, Datasets, Value,RawCpt,VectorField,Derivative)
             
             switch (NumPass)
                 case 1
-                    DX = SavePIVparam{1,1};
+                    DX = SavePIVparam{1,1}/2;
                 case 2
-                    DX = SavePIVparam{12,1};
+                    DX = SavePIVparam{12,1}/2;
                 case 3
-                    DX = SavePIVparam{13,1};
+                    DX = SavePIVparam{13,1}/2;
                 case 4
-                    DX = SavePIVparam{14,1};
+                    DX = SavePIVparam{14,1}/2;
             end
             % check if there is a mask
             MaskExist = Datasets{Value,16};

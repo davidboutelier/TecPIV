@@ -2323,7 +2323,7 @@ for folding = true
     
     % Define Derivative display properties
     myhandles.Derivative{1,1} = 0;
-    myhandles.Derivative{1,2}= 'eyx';
+    myhandles.Derivative{1,2}= 'u';
     myhandles.Derivative{1,3} = 1; % minmax
     myhandles.Derivative{1,4} = 'DIV-256';% default palette for derivative
     myhandles.Derivative{1,5} = 0; % default min
@@ -2856,19 +2856,7 @@ function hDisplaySettingsMenuitemCallback(hDisplaySettingsMenuitem,eventdata)
                 hDisplayFigure.Visible = 'off';  
         end
     
-    
-        % make second figure visible
-        %hDisplayFigure.Visible = 'on';
-        %hDisplayFigureGRID.Visible = 'on';
 
-        % make ui panel visible
-%         hpanelChangeBackgroundDisplaySettings.Visible = 'on';
-%         hpanelChangeVectorDisplaySettings.Visible = 'on';
-%         hpanelChangeVectorDerivativeDisplaySettings.Visible = 'on';
-        %hpanelChangeApplyDisplaySettings.Visible = 'on';
-        % place the variables in GUI panel
-        % Background image
-        % list of palette names
         ListPopUp = hpopupBackgroundCPTSelector.String;
         LenList=length(ListPopUp);
         Choice= cellstr(myhandles.RawCpt{1,1}); % selected palette name
@@ -2908,7 +2896,7 @@ function hDisplaySettingsMenuitemCallback(hDisplaySettingsMenuitem,eventdata)
         
         ListPopUpDeriv =  hpopupVecDerivativeTypeSelector.String;
         LenList=length(ListPopUpDeriv);
-        Choice= myhandles.Derivative{1,2}; % selected programmatically
+        Choice = myhandles.Derivative{1,2}; % selected programmatically
         hpopupVecDerivativeTypeSelector.Value=1; % default
         
         for i=1:LenList
@@ -2937,10 +2925,13 @@ function hDisplaySettingsMenuitemCallback(hDisplaySettingsMenuitem,eventdata)
         hMinScalarColorPalette.String = num2str(myhandles.Derivative{1,6});
         
         guidata(hMainFigure,myhandles);
+        myhandles.Derivative
     
 end
 function hExportThisFrameMenuitemCallback (hExportThisFrameMenuitem,eventdata)
-    
+        
+        myhandles.Derivative{1,2} 
+        
         SourceNum=hpopupSourceSelector.Value;
         SourceName=char(hpopupSourceSelector.String(SourceNum));
         
@@ -2973,6 +2964,11 @@ function hExportThisFrameMenuitemCallback (hExportThisFrameMenuitem,eventdata)
         newaxes = axes('DataAspectRatio',[1 1 1]);
         
         % Display image
+        
+        
+        
+        
+         
         TecPIV_Display_2(newaxes,CurrentFrame,myhandles.DataSets,ThisDataSetNumber,myhandles.RawCpt,myhandles.VectorField,myhandles.Derivative);
         
         Colormap = myhandles.Derivative{1,4};
@@ -3737,6 +3733,24 @@ function hStartCorrelationCallback(hStartPIV,eventdata)
             myhandles.ROI=ROI;
             param{26,1}=myhandles.ROI;
         end
+        
+        
+        
+        disp('Starting correlation procedure...')
+        disp(['- Using data set: ', DatasetFolder])
+        disp(['- Using ', num2str(NumberPass), ' pass approach'])
+        
+        for n = 1:NumberPass
+            if n == 1
+                disp(['-- first pass interrogation area is :', num2str(IntAreaPass1) ,' pixels'])
+            elseif n == 2
+                disp(['-- second pass interrogation area is :', num2str(IntAreaPass2) ,' pixels'])
+            else
+                disp(['-- third pass interrogation area is :', num2str(IntAreaPass3) ,' pixels'])
+            end    
+                
+        end
+        
          
         
         cd( DatasetFolder ); % go into Cam_1/Raw/Rectified
@@ -4673,6 +4687,7 @@ function hApplyDisplaySetting(hApplyDisplaySettingButton,eventdata)
             drawnow
         
         guidata(hMainFigure,myhandles); 
+        myhandles.Derivative{1,2} 
         
 end  
 function hLagrangianSumMenuitemCallback(hLagrangianSumMenuitem,eventdata)
