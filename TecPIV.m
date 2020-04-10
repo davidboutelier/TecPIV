@@ -2213,7 +2213,7 @@ for folding = true
     uipopmenuparam = uicontrol('style', 'popupmenu',...
     'parent', hFigAddLagTracer,...
     'FontSize',myhandles.MyFontSize,...
-    'string', {'u','v','du/dx','du/dy','vorticity'},...
+    'string', {'u','v','du/dx','du/dy','dv/dx', 'dv/dy', 'exy', 'U', 'V', 'dU/dx', 'dU/dy', 'dV,dx', 'dV/dy', 'Exx', 'Exy', 'Eyx', 'Eyy', 'IE', 'IIE'},...
     'value', 1, ...
     'position', [(uibuttoncoord.Position(1)+uibuttoncoord.Position(3) + 4 * pad) 50 200 30]);
 
@@ -2229,7 +2229,7 @@ for folding = true
     uibuttonparam.Position(3) = uibuttonparam.Extent(3) + pad;
     uibuttonparam.Position(4) = uibuttonparam.Extent(4) + pad;
     
-    uibuttonparam.Callback = @AddParam;
+    uibuttonparam.Callback = @Add_Param_Lagrangian_Tracers;
 
     uitableTracers = uitable('parent', hFigAddLagTracer,...
         'data', myhandles.TracerInit,...
@@ -4791,7 +4791,7 @@ function hAddLagTracersCallback(hAddLagrangianTracersMenu,eventdata)
     hFigAddLagTracer.Visible = 'on';
 end
 
-function AddParam(src,event)
+function Add_Param_Lagrangian_Tracers(~,~)
     FrameNumS = uiFrameNum.String;
     PopMenS = uipopmenuparam.String;
     PopMenV = uipopmenuparam.Value;
@@ -4843,5 +4843,38 @@ function AddParam(src,event)
     hApplyTracer.Position(1) = hFigAddLagTracer.Position(3) - (hApplyTracer.Position(3) + pad);
     
 end
-guidata(hMainFigure,myhandles); 
+
+function ApplyTracersCallback(~,~)
+        guidata(hMainFigure,myhandles);
+        TracerInit = myhandles.TracerInit;
+        save('TracerInit.mat', 'TracerInit')
 end
+
+function GetTracerCoord(~,~)
+    selected_tracer = str2num(uiTracerNum.String);   % tracer number
+    selected_tracer_first_frame = str2num(uiFrameNum.String); % first frame number
+    
+    % get the current dataset number
+    ThisDataSetNumber = hpopupSourceSelector.Value;
+    
+    % Display the first image
+    TecPIV_Display_2(hPlotAxes,selected_tracer_first_frame,myhandles.DataSets,ThisDataSetNumber,myhandles.RawCpt,myhandles.VectorField,myhandles.Derivative);
+    
+    % get coordinates using user input
+    [x_t,y_t] = ginput(1);
+    myhandles.TracerInit{selected_tracer, 3} = x_t;
+    myhandles.TracerInit{selected_tracer, 4} = y_t;
+    
+    % update the table
+    uitableTracers.Data = myhandles.TracerInit;
+    
+    
+    
+end
+
+
+end
+
+
+
+
