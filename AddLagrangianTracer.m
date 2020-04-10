@@ -91,20 +91,20 @@ hApplyTracer.Position(3) = hApplyTracer.Extent(3) + pad;
 hApplyTracer.Position(4) = hApplyTracer.Extent(4) + pad;
 hApplyTracer.Position(1) = hFigAddLagTracer.Position(3) - (hApplyTracer.Position(3) + pad);
 
-hApplyTracer.Callback = @ApplyTracersCallback
-uibuttoncoord.Callback = @GetTracerCoord
+hApplyTracer.Callback = @ApplyTracersCallback;
 
-function GetTracerCoord(src,event)
+uibuttoncoord.Callback = @GetTracerCoord;
+
+function GetTracerCoord(~,~)
     myTracerhandles.TracerNumS = uiTracerNum.String;
     myTracerhandles.FrameNumS = uiFrameNum.String;    
 end
 
-
-function ApplyTracersCallback(src,event)
+function ApplyTracersCallback(~,~)
         save('TracerInit.mat', 'TracerInit')
 end
 
-function AddParam(src,event)
+function AddParam(~,~)
     
     myTracerhandles.FrameNumS = uiFrameNum.String;
     myTracerhandles.PopMenS = uipopmenuparam.String;
@@ -155,8 +155,7 @@ function AddParam(src,event)
     HeightInit = uitableTracers.Position(2)+uitableTracers.Position(4);
     hFigAddLagTracer.Position(4) = HeightInit + pad;
     hApplyTracer.Position(1) = hFigAddLagTracer.Position(3) - (hApplyTracer.Position(3) + pad);
-    
-           
+         
 end
 
 
