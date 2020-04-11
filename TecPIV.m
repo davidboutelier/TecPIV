@@ -228,7 +228,7 @@ else
 end
 
 %% Create version
-myhandles.Version='v.1901';
+myhandles.Version='v.2004';
 % date-version: 2.1.1 - 4/04/2016 --> v.1604
 % date-version: 2.1.2 - 12/12/2016 -->v.1612
 
@@ -572,6 +572,19 @@ hImgNumber = uicontrol(...
         'Label','Add Lagrangian tracers',...
         'HandleVisibility','callback', ...
         'Callback', @hAddLagTracersCallback);
+    
+    % Extract profiles
+    hExtractXProfile = uimenu;
+    hExtractXProfile.Parent = hPIVPostprocessMenu;
+    hExtractXProfile.Label = 'Extract profile along x axis';
+    hExtractXProfile.HandleVisibility = 'callback';
+    hExtractXProfile.Callback = @hExtractXProfileCallback;
+    
+    hExtractYProfile = uimenu;
+    hExtractYProfile.Parent = hPIVPostprocessMenu;
+    hExtractYProfile.Label = 'Extract profile along y axis';
+    hExtractYProfile.HandleVisibility = 'callback';
+    hExtractYProfile.Callback = @hExtractYProfileCallback;
         
     end
 end
@@ -2141,9 +2154,6 @@ for folding = true
         'Units', 'pixels', ...
         'Position',[10 110 200 30]);
 
-     
-    
-    
 end
 
 % UI LagTracers figure
@@ -2163,40 +2173,40 @@ for folding = true
         'FontWeight', 'Bold', ...
         'position', [(hFigAddLagTracer.Position(3) - 60) 10 50 40]);
     
-    h1 = uicontrol('style','text',...
+    hTracerNum = uicontrol('style','text',...
         'parent', hFigAddLagTracer,...
         'string', 'Tracer number :',...
         'FontSize',myhandles.MyFontSize,...
         'HorizontalAlignment', 'left',...
         'position', [10 50 200 30]);
     
-    h1.Position(3) = h1.Extent(3) + pad;
-    h1.Position(4) = h1.Extent(4) + pad;
+    hTracerNum.Position(3) = hTracerNum.Extent(3) + pad;
+    hTracerNum.Position(4) = hTracerNum.Extent(4) + pad;
     
     uiTracerNum = uicontrol('style','edit',...
         'parent', hFigAddLagTracer,...
         'FontSize',myhandles.MyFontSize,...
         'string', num2str(1),...
-        'position', [(h1.Position(1)+h1.Position(3)) 50 30 30]);
+        'position', [(hTracerNum.Position(1)+hTracerNum.Position(3)) 50 30 30]);
 
     uiTracerNum.Position(3) = uiTracerNum.Extent(3) + pad;
     uiTracerNum.Position(4) = uiTracerNum.Extent(4) + pad;
     
-    h2 = uicontrol('style','text',...
+    hFrameNum = uicontrol('style','text',...
         'parent', hFigAddLagTracer,...
         'string', 'Frame number :',...
         'FontSize',myhandles.MyFontSize,...
         'HorizontalAlignment', 'left',...
         'position', [(uiTracerNum.Position(1)+uiTracerNum.Position(3) + 4 * pad) 50 200 30]);
 
-    h2.Position(3) = h2.Extent(3) + pad;
-    h2.Position(4) = h2.Extent(4) + pad;
+    hFrameNum.Position(3) = hFrameNum.Extent(3) + pad;
+    hFrameNum.Position(4) = hFrameNum.Extent(4) + pad;
     
     uiFrameNum = uicontrol('style','edit',...
         'parent', hFigAddLagTracer,...
         'FontSize',myhandles.MyFontSize,...
         'string', num2str(DFN),...
-        'position', [(h2.Position(1)+h2.Position(3)) 50 30 30]);
+        'position', [(hFrameNum.Position(1)+hFrameNum.Position(3)) 50 30 30]);
 
     uiFrameNum.Position(3) = uiFrameNum.Extent(3) + pad;
     uiFrameNum.Position(4) = uiFrameNum.Extent(4) + pad;
@@ -2209,6 +2219,7 @@ for folding = true
 
     uibuttoncoord.Position(3) = uibuttoncoord.Extent(3) + pad;
     uibuttoncoord.Position(4) = uibuttoncoord.Extent(4) + pad;
+    uibuttoncoord.Callback = @GetTracerCoord;
     
     uipopmenuparam = uicontrol('style', 'popupmenu',...
     'parent', hFigAddLagTracer,...
@@ -2228,9 +2239,7 @@ for folding = true
 
     uibuttonparam.Position(3) = uibuttonparam.Extent(3) + pad;
     uibuttonparam.Position(4) = uibuttonparam.Extent(4) + pad;
-    
-    uibuttonparam.Callback = @Add_Param_Lagrangian_Tracers;
-
+    uibuttonparam.Callback = @AddParamLagrangianTracers;
     uitableTracers = uitable('parent', hFigAddLagTracer,...
         'data', myhandles.TracerInit,...
         'position', [10 90 400 30]);
@@ -2243,56 +2252,21 @@ for folding = true
     hApplyTracer.Position(3) = hApplyTracer.Extent(3) + 2*pad;
     hApplyTracer.Position(4) = hApplyTracer.Extent(4) + 2*pad;
     hApplyTracer.Position(1) = hFigAddLagTracer.Position(3) - (hApplyTracer.Position(3) + pad);
-
     hApplyTracer.Callback = @ApplyTracersCallback;
-    uibuttoncoord.Callback = @GetTracerCoord;
+    
 
 end
 
 % make figures visible/invisible
 for folding = true
-    
-    % Move the GUI to the center of the screen.
-    movegui(hMainFigure,'center');
-%    movegui(hSecondFigure,'center');
-    movegui(hDisplayFigure,'center');
-    movegui(hDisplayFigureIMG,'center');
-    movegui(hDisplayFigureGRID,'center');
-    movegui(hImportFigure,'center');
-    movegui(hCPFigure,'center');
-    movegui(hCalibrateFigure,'center');
-    movegui(hRotateFigure,'center');
-    movegui(hContrastFigure,'center');
-    movegui(hPIVSettingsFigure,'center');
-    
-    
-    % Make the GUI visible/invisible.
-    hMainFigure.Visible = 'on';
-    hImportFigure.Visible = 'off';
-    hCPFigure.Visible = 'off';
-    hCalibrateFigure.Visible = 'off';
-    hRotateFigure.Visible = 'off';
-    hContrastFigure.Visible = 'off';
-    hPIVSettingsFigure.Visible = 'off';
-    hDisplayFigure.Visible = 'off';
-    hDisplayFigureIMG.Visible = 'off';
-    hDisplayFigureGRID.Visible = 'off';
-    
-    
-    
-    hSecondFigure.Visible = 'off';
-    
-    
-   
-    
-%     % make panels visible/invisible
-%     hpanelImportFrames.Visible = 'off';
-%     hpanelGetControlPoints.Visible = 'off';
-%     hpanelRectifySettings.Visible='off';
-%     hpanelUndeform.Visible='off';
-%     hpanelContrast.Visible='off'; 
-%     hpanelPIVSettings.Visible='off';
-%     hpanelExportAllSettings.Visible='off';
+ 
+ hFigures=findall(0,'type','figure'); 
+ for i = 1:length(hFigures)
+     hf = hFigures(i);
+     movegui(hf,'center');
+     hf.Visible = 'off';
+ end
+
     
 end
 
@@ -4791,7 +4765,7 @@ function hAddLagTracersCallback(hAddLagrangianTracersMenu,eventdata)
     hFigAddLagTracer.Visible = 'on';
 end
 
-function Add_Param_Lagrangian_Tracers(~,~)
+function AddParamLagrangianTracers(~,~)
     FrameNumS = uiFrameNum.String;
     PopMenS = uipopmenuparam.String;
     PopMenV = uipopmenuparam.Value;
@@ -4848,6 +4822,8 @@ function ApplyTracersCallback(~,~)
         guidata(hMainFigure,myhandles);
         TracerInit = myhandles.TracerInit;
         save('TracerInit.mat', 'TracerInit')
+        
+        TecPIV_TrackLagrangianTracers(myhandles.TracerInit);
 end
 
 function GetTracerCoord(~,~)
@@ -4867,9 +4843,6 @@ function GetTracerCoord(~,~)
     
     % update the table
     uitableTracers.Data = myhandles.TracerInit;
-    
-    
-    
 end
 
 
