@@ -184,7 +184,10 @@ if DisplayDerivative == 1
         end
      
     [HRX,HRY]=meshgrid(xmin:xmax,(ymin:ymax));
-    NDerive=griddata(XX,YY,DerivField,HRX,HRY,InterDerivMethod);
+    %NDerive=griddata(XX,YY,DerivField,HRX,HRY,InterDerivMethod);
+    
+    F = griddedInterpolant({XX(1,:),YY(:,1)},DerivField,'linear');
+    NDerive = F({HRX(1,:),HRY(:,1)});
     
     XM=RoiMask(:,1);
     YM=RoiMask(:,2);

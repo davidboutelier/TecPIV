@@ -153,10 +153,10 @@ hPIVSettingsFigure = figure(...
     'defaultuicontrolbackgroundcolor'));
 
 % Create a display figure 
+% 'Visible','off', ...
 hDisplayFigureIMG = figure(...
     'name','display image', ...
-    'Position',[0,0,200,150], ...
-    'Visible','off', ...
+    'Position',[0,0,200,450], ...
     'MenuBar','none', ...
     'Toolbar','none', ...
     'HandleVisibility','callback', ...
@@ -203,6 +203,19 @@ hexportFigure = figure(...
     'CloseRequestFcn', @CloseRequestSecFigure, ...
     'Color', get(groot,...
     'defaultuicontrolbackgroundcolor'));
+
+% Export profiles
+hFigProfiles = figure();
+hFigProfiles.Name = 'Extract profiles';
+hFigProfiles.Units = 'pixels';
+hFigProfiles.Position = [100 100 800 600];
+hFigProfiles.MenuBar = 'none';
+hFigProfiles.ToolBar = 'none';
+hFigProfiles.HandleVisibility = 'callback';
+hFigProfiles.Resize = 'off';
+hFigProfiles.CloseRequestFcn = @CloseRequestSecFigure;
+hFigProfiles.Color = get(groot, 'defaultuicontrolbackgroundcolor');
+
 
 end
 
@@ -574,17 +587,11 @@ hImgNumber = uicontrol(...
         'Callback', @hAddLagTracersCallback);
     
     % Extract profiles
-    hExtractXProfile = uimenu;
-    hExtractXProfile.Parent = hPIVPostprocessMenu;
-    hExtractXProfile.Label = 'Extract profile along x axis';
-    hExtractXProfile.HandleVisibility = 'callback';
-    hExtractXProfile.Callback = @hExtractXProfileCallback;
-    
-    hExtractYProfile = uimenu;
-    hExtractYProfile.Parent = hPIVPostprocessMenu;
-    hExtractYProfile.Label = 'Extract profile along y axis';
-    hExtractYProfile.HandleVisibility = 'callback';
-    hExtractYProfile.Callback = @hExtractYProfileCallback;
+    hExtractProfile = uimenu;
+    hExtractProfile.Parent = hPIVPostprocessMenu;
+    hExtractProfile.Label = 'Extract profile';
+    hExtractProfile.HandleVisibility = 'callback';
+    hExtractProfile.Callback = @ExtractProfileCallback;
         
     end
 end
@@ -593,6 +600,34 @@ end
 for folding = true
     MyFontSize = myhandles.MyFontSize;
     P = hDisplayFigureIMG.Position;
+    
+    hcropcheckbox = uicontrol(...
+        'Style','checkbox', ...
+        'String', 'crop', ...
+        'FontSize',MyFontSize,...
+        'HorizontalAlignment','left',...
+        'Parent', hDisplayFigureIMG, ...
+        'Units', 'pixels', ...
+        'value', 1, ...
+        'Position',[10 300 150 30]);
+    
+    htextCropX = uicontrol(...
+        'Style','text', ...
+        'String','Min/Max X:',...
+        'FontSize',MyFontSize,...
+        'HorizontalAlignment','left',...
+        'Parent', hDisplayFigureIMG, ...
+        'Units', 'pixels', ...
+        'Position',[10 155 200 30]);
+    
+    htextCropY = uicontrol(...
+        'Style','text', ...
+        'String','Min/Max Y:',...
+        'FontSize',MyFontSize,...
+        'HorizontalAlignment','left',...
+        'Parent', hDisplayFigureIMG, ...
+        'Units', 'pixels', ...
+        'Position',[10 135 200 30]);
     
     % Apply button at bottom right corner
     hApplyDisplaySettingButtonIMG = uicontrol(...
@@ -2257,18 +2292,78 @@ for folding = true
 
 end
 
-% make figures visible/invisible
+% UI profiles
 for folding = true
- 
- hFigures=findall(0,'type','figure'); 
- for i = 1:length(hFigures)
-     hf = hFigures(i);
-     movegui(hf,'center');
-     hf.Visible = 'off';
- end
+    myhandles.ProfileParametersList = {}; % create cell array with list of parameters to sample
+    
+    hButtonGroup = uibuttongroup();
+    hButtonGroup.Parent = hFigProfiles;
+    hButtonGroup.Units = 'pixels';
+    hButtonGroup.Position = [10 80 120 120];
+    hButtonGroup.Visible = 'on';
+    
+    hXProfile = uicontrol();
+    hYProfile = uicontrol();
+    hFreeProfile = uicontrol();
+    
+    hXProfile.Style = 'radiobutton';
+    hYProfile.Style = 'radiobutton';
+    hFreeProfile.Style = 'radiobutton';
+    
+    hXProfile.Parent = hButtonGroup;
+    hYProfile.Parent = hButtonGroup;
+    hFreeProfile.Parent = hButtonGroup;
+    
+    hXProfile.Position = [10 60 100 30];
+    hYProfile.Position = [10 30 100 30];
+    hFreeProfile.Position = [10 0 100 30];
+    
+    hXProfile.String = 'profile along X';
+    hYProfile.String = 'profile along Y';
+    hFreeProfile.String = 'free profile';
+    
+    hinterpProf = uicontrol('Style', 'checkbox');
+    hinterpProf.Parent = hFigProfiles;
+    hinterpProf.Units = 'pixels';
+    hinterpProf.Position = [140 80 150 30];
+    hinterpProf.String = 'interpolated values';
+    hinterpProf.Value = 1;
+    
+    hnearProf = uicontrol('Style', 'checkbox');
+    hnearProf.Parent = hFigProfiles;
+    hnearProf.Units = 'pixels';
+    hnearProf.Position = [140 110 150 30];
+    hnearProf.String = 'nearest values';
+    hnearProf.Value = 1;
+    
+    uitableProfileParam = uitable('parent', hFigProfiles,...
+        'data', myhandles.ProfileParametersList,...
+        'units', 'pixels', ...
+        'position', [10 230 120 120]);
+    
+    uipopmenuParamProfile = uicontrol('style', 'popupmenu',...
+    'parent', hFigProfiles,...
+    'FontSize',myhandles.MyFontSize,...
+    'value', 1,...
+    'position', [140 230 120 120]);
 
     
+    
+ 
 end
+
+% make figures visible/invisible
+% for folding = true
+%  
+%  hFigures=findall(0,'type','figure'); 
+%  %for i = 1:length(hFigures)
+%      hf = hFigures(i);
+%      movegui(hf,'center');
+%      hf.Visible = 'off';
+%  end
+% 
+%     
+% end
 
 % define settings & defaults
 for folding = true
@@ -2812,6 +2907,7 @@ function hStartRectifyCalibCallback(hStartRectifyCalib,eventdata)
 end
 function hDisplaySettingsMenuitemCallback(hDisplaySettingsMenuitem,eventdata)
         
+        % find type of current dataset and adapt which window is shown 
         CurrentDatasetNumber = hpopupSourceSelector.Value;
         DataType = myhandles.DataSets{CurrentDatasetNumber,15};
         
@@ -4845,7 +4941,28 @@ function GetTracerCoord(~,~)
     uitableTracers.Data = myhandles.TracerInit;
 end
 
-
+function ExtractProfileCallback(hExtractProfile,~)
+    
+    % find type of current dataset and adapt which window is shown 
+    
+    CurrentDatasetNumber = hpopupSourceSelector.Value;
+    
+    tf = isfield(myhandles,'DataSets');
+    
+    if tf == 1
+        DataType = myhandles.DataSets{CurrentDatasetNumber,15};
+        if strcmp(DataType, 'Lagrangian') == 1
+            listParam = {'U', 'V'}
+        else
+            listParam = {'u','v','du/dx','du/dy','dv/dx', 'dv/dy', 'exy', 'vorticity', 'Ie', 'IIe'};
+        end
+    else
+        listParam = {'u','v','du/dx','du/dy','dv/dx', 'dv/dy', 'exy', 'vorticity', 'Ie', 'IIe'};
+    end
+    
+    hFigProfiles.Visible = 'on';
+    uipopmenuParamProfile.String = listParam;
+end
 end
 
 
